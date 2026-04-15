@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Career Advice - Career Craft</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <span class="logo-icon">&#9881;</span> Career Craft
+            </a>
+            <button class="nav-toggle" aria-label="Toggle navigation">
+                <span></span><span></span><span></span>
+            </button>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="explore.html" class="nav-link">Explore Careers</a></li>
+                <li><a href="advice.html" class="nav-link active">Career Advice</a></li>
+                <li><a href="resume.html" class="nav-link cta-button">Build Resume</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="page-hero">
+        <div class="container">
+            <span class="section-tag">Career Advice</span>
+            <h1>Expert Tips to <span class="gradient-text">Boost Your Career</span></h1>
+            <p>Practical, actionable advice to help you navigate every stage of your professional journey.</p>
+        </div>
+    </section>
+
+    <!-- Advice Filter Tabs -->
+    <section class="advice-section">
+        <div class="container">
+            <div class="advice-tabs">
+                <button class="tab-btn active" data-filter="all">All Topics</button>
+                <button class="tab-btn" data-filter="getting-started">Getting Started</button>
+                <button class="tab-btn" data-filter="networking">Networking</button>
+                <button class="tab-btn" data-filter="interviews">Interviews</button>
+                <button class="tab-btn" data-filter="salary">Salary</button>
+                <button class="tab-btn" data-filter="growth">Growth</button>
+            </div>
+
+            <div class="advice-grid" id="adviceGrid">
+                <!-- Getting Started -->
+                <article class="advice-card" data-category="getting-started" id="getting-started">
+                    <div class="advice-card-header" style="background: linear-gradient(135deg, #667eea, #764ba2);">
+                        <span class="advice-tag">Getting Started</span>
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><path d="M22 11.08V12a10 10 0 11-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                    </div>
+                    <div class="advice-card-body">
+                        <h3>How to Choose the Right Career Path</h3>
+                        <p>Choosing a career is one of life's biggest decisions, but it doesn't have to be overwhelming. Start with self-reflection.</p>
+                        <div class="advice-content">
+                            <h4>Step 1: Know Yourself</h4>
+                            <p>Make a list of your strengths, interests, and values. What activities make you lose track of time? What problems do you love solving? What matters most to you in a work environment?</p>
+
+                            <h4>Step 2: Research Broadly</h4>
+                            <p>Don't limit yourself to careers you've heard of. Use our <a href="explore.html">Career Explorer</a> to discover paths you might not have considered. Talk to people in different fields &mdash; informational interviews are gold.</p>
+
+                            <h4>Step 3: Experiment</h4>
+                            <p>Before committing, try things out. Volunteer, freelance, take on side projects, or job-shadow. Real-world experience beats theoretical research every time.</p>
+
+                            <h4>Step 4: Start, Then Iterate</h4>
+                            <p>Your first career doesn't have to be your forever career. The average person changes careers 3-7 times in their lifetime. Pick a strong starting point and stay open to growth.</p>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Networking -->
+                <article class="advice-card" data-category="networking" id="networking">
+                    <div class="advice-card-header" style="background: linear-gradient(135deg, #f093fb, #f5576c);">
+                        <span class="advice-tag">Networking</span>
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+                    </div>
+                    <div class="advice-card-body">
+                        <h3>Networking Without Being Awkward</h3>
+                        <p>Networking doesn't have to mean forced small talk at stuffy events. Here's how to build genuine professional relationships.</p>
+                        <div class="advice-content">
+                            <h4>Be Curious, Not Transactional</h4>
+                            <p>The best networkers aren't the ones who hand out the most business cards &mdash; they're the ones who ask the best questions. Show genuine interest in people's work and stories.</p>
+
+                            <h4>Start Online</h4>
+                            <p>If in-person events feel daunting, start by engaging on LinkedIn, Twitter/X, or industry forums. Comment thoughtfully on posts, share useful content, and join relevant groups.</p>
+
+                            <h4>The Coffee Chat Formula</h4>
+                            <p>Reach out to people you admire with a short, specific message: who you are, why you're reaching out, and a clear ask (usually a 15-20 minute chat). Keep it respectful of their time.</p>
+
+                            <h4>Follow Up and Give Back</h4>
+                            <p>After meeting someone, send a brief thank-you note. Look for ways to help them too &mdash; share an article they'd find interesting, make an introduction, or offer your skills. Networking is a two-way street.</p>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Interviews -->
+                <article class="advice-card" data-category="interviews" id="interviews">
+                    <div class="advice-card-header" style="background: linear-gradient(135deg, #4facfe, #00f2fe);">
+                        <span class="advice-tag">Interviews</span>
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg>
+                    </div>
+                    <div class="advice-card-body">
+                        <h3>Ace Your Next Interview</h3>
+                        <p>Interviews can be nerve-wracking, but preparation turns anxiety into confidence. Here's your playbook.</p>
+                        <div class="advice-content">
+                            <h4>Research Like a Detective</h4>
+                            <p>Go beyond the "About Us" page. Read recent news, understand their products, check Glassdoor reviews, and look up your interviewers on LinkedIn. The more context you have, the better your answers will be.</p>
+
+                            <h4>Master the STAR Method</h4>
+                            <p><strong>Situation, Task, Action, Result.</strong> Structure your behavioral answers this way. Prepare 5-8 STAR stories that showcase different skills, and you'll be ready for almost any question.</p>
+
+                            <h4>Ask Great Questions</h4>
+                            <p>Your questions reveal your thinking. Ask about team culture, success metrics, challenges, and growth opportunities. Avoid asking things easily found on their website.</p>
+
+                            <h4>The Power of Practice</h4>
+                            <p>Record yourself answering common questions. It feels awkward, but it's the fastest way to improve. Do mock interviews with friends or use online platforms for practice rounds.</p>
+
+                            <h4>After the Interview</h4>
+                            <p>Send a thoughtful thank-you email within 24 hours. Reference something specific from your conversation. This small touch makes a big impression.</p>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Salary -->
+                <article class="advice-card" data-category="salary" id="salary">
+                    <div class="advice-card-header" style="background: linear-gradient(135deg, #43e97b, #38f9d7);">
+                        <span class="advice-tag">Salary</span>
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+                    </div>
+                    <div class="advice-card-body">
+                        <h3>Negotiate Your Salary Like a Pro</h3>
+                        <p>Most people leave money on the table because they don't negotiate. Here's how to get what you're worth.</p>
+                        <div class="advice-content">
+                            <h4>Know Your Market Value</h4>
+                            <p>Use sites like Glassdoor, Levels.fyi, Payscale, and LinkedIn Salary to research compensation for your role, location, and experience level. Data is your best ally.</p>
+
+                            <h4>Never Share Your Current Salary First</h4>
+                            <p>When asked about salary expectations, try: "I'd love to learn more about the role first. What's the budgeted range for this position?" Many locations have pay transparency laws on your side.</p>
+
+                            <h4>Negotiate the Total Package</h4>
+                            <p>Salary is just one piece. Consider signing bonuses, equity, PTO, remote work flexibility, professional development budgets, and title. Sometimes the best wins come from non-salary items.</p>
+
+                            <h4>Practice Your Script</h4>
+                            <p>Rehearse your negotiation conversation. A good template: "I'm really excited about this opportunity. Based on my research and experience, I was hoping for [range]. Is there flexibility there?"</p>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Growth -->
+                <article class="advice-card" data-category="growth" id="growth">
+                    <div class="advice-card-header" style="background: linear-gradient(135deg, #fa709a, #fee140);">
+                        <span class="advice-tag">Growth</span>
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+                    </div>
+                    <div class="advice-card-body">
+                        <h3>Level Up: Continuous Career Growth</h3>
+                        <p>Landing the job is just the beginning. Here's how to keep growing and stay ahead in your field.</p>
+                        <div class="advice-content">
+                            <h4>Invest in Skills, Not Just Titles</h4>
+                            <p>Focus on building transferable skills: communication, problem-solving, leadership, and technical proficiency. These compound over time and make you valuable in any role.</p>
+
+                            <h4>Find Mentors and Sponsors</h4>
+                            <p>A <strong>mentor</strong> gives advice. A <strong>sponsor</strong> advocates for you in rooms you're not in. Both are invaluable. Seek them out by doing great work and building genuine relationships.</p>
+
+                            <h4>Make Your Work Visible</h4>
+                            <p>Don't assume great work speaks for itself. Share wins in team meetings, write internal updates, and keep a "brag document" tracking your accomplishments. You'll need this for performance reviews and your next role.</p>
+
+                            <h4>Stay Adaptable</h4>
+                            <p>Industries evolve fast. Dedicate time to learning new tools, attending conferences, taking courses, and reading industry publications. The most successful professionals are perpetual learners.</p>
+
+                            <h4>Know When to Move On</h4>
+                            <p>Growth sometimes means changing teams, companies, or even careers. If you've stopped learning and there's no clear path forward, it might be time for a new chapter. That's not failure &mdash; it's strategy.</p>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Career Change -->
+                <article class="advice-card" data-category="getting-started" id="career-change">
+                    <div class="advice-card-header" style="background: linear-gradient(135deg, #a18cd1, #fbc2eb);">
+                        <span class="advice-tag">Getting Started</span>
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5"><path d="M1 4v6h6"/><path d="M3.51 15a9 9 0 102.13-9.36L1 10"/></svg>
+                    </div>
+                    <div class="advice-card-body">
+                        <h3>Making a Career Change at Any Age</h3>
+                        <p>It's never too late to reinvent yourself. Here's a practical guide to switching careers successfully.</p>
+                        <div class="advice-content">
+                            <h4>Identify Transferable Skills</h4>
+                            <p>You have more relevant experience than you think. Project management, communication, analysis, leadership, and problem-solving transfer across every industry. Map your existing skills to your target field.</p>
+
+                            <h4>Bridge the Gap</h4>
+                            <p>Take online courses, earn certifications, or do freelance projects in your new field. You don't need a full degree &mdash; you need proof that you can do the work.</p>
+
+                            <h4>Build Your New Network</h4>
+                            <p>Join professional communities in your target industry. Attend meetups, join Slack groups, and connect with people who've made similar transitions. Their advice will be invaluable.</p>
+
+                            <h4>Reframe Your Story</h4>
+                            <p>Your career change is a strength, not a weakness. Craft a narrative that connects your past experience to your new direction. Diverse perspectives are incredibly valuable to employers.</p>
+                        </div>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- Quick Tips Section -->
+    <section class="quick-tips">
+        <div class="container">
+            <div class="section-header">
+                <span class="section-tag">Quick Wins</span>
+                <h2>Bite-Sized <span class="gradient-text">Career Tips</span></h2>
+            </div>
+            <div class="tips-grid">
+                <div class="tip-card">
+                    <span class="tip-number">01</span>
+                    <p>Update your LinkedIn headline to say what you <em>do</em>, not just your job title. "I help companies scale through data-driven marketing" beats "Marketing Manager."</p>
+                </div>
+                <div class="tip-card">
+                    <span class="tip-number">02</span>
+                    <p>Use numbers in your resume. "Increased sales by 30%" is 10x more compelling than "Responsible for increasing sales."</p>
+                </div>
+                <div class="tip-card">
+                    <span class="tip-number">03</span>
+                    <p>Before any meeting, prepare one thoughtful question. It shows engagement and builds your reputation as a strategic thinker.</p>
+                </div>
+                <div class="tip-card">
+                    <span class="tip-number">04</span>
+                    <p>Keep a "wins journal." Write down accomplishments weekly. You'll be amazed how useful this is come review time or job search time.</p>
+                </div>
+                <div class="tip-card">
+                    <span class="tip-number">05</span>
+                    <p>The best time to negotiate salary is when you have leverage &mdash; a competing offer, a big win, or when they clearly want you. Don't negotiate out of desperation.</p>
+                </div>
+                <div class="tip-card">
+                    <span class="tip-number">06</span>
+                    <p>Learn to say no strategically. Taking on everything doesn't make you valuable &mdash; delivering excellent work on the right things does.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Ready to Take the Next Step?</h2>
+                <p>Put these tips into action. Explore career paths or build a standout resume today.</p>
+                <div class="hero-actions">
+                    <a href="explore.html" class="btn btn-primary btn-lg">
+                        <span>Explore Careers</span>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                    </a>
+                    <a href="resume.html" class="btn btn-outline btn-lg btn-outline-light">Build a Resume</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <a href="index.html" class="nav-logo">
+                        <span class="logo-icon">&#9881;</span> Career Craft
+                    </a>
+                    <p>Helping you discover, plan, and build the career you deserve.</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-col">
+                        <h4>Tools</h4>
+                        <a href="explore.html">Career Explorer</a>
+                        <a href="advice.html">Career Advice</a>
+                        <a href="resume.html">Resume Builder</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Career Craft. Built to help you shine.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/advice.js"></script>
+</body>
+</html>
