@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>90-Day Career Launch Plan - Career Craft</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+      .lp { padding: 40px 0 100px; }
+
+      /* Toolbar */
+      .lp-toolbar {
+        display: flex; gap: 10px; flex-wrap: wrap; align-items: center;
+        padding: 16px 24px; background: #fff; border-radius: 16px;
+        border: 1px solid #f1f5f9; box-shadow: 0 2px 12px rgba(0,0,0,0.03); margin-bottom: 24px;
+      }
+      .lp-toolbar .lp-nav { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+      .lp-toolbar .lp-nav a {
+        padding: 7px 14px; border-radius: 50px; border: 2px solid #e2e8f0;
+        font-weight: 600; font-size: 0.82rem; color: #64748b; transition: all 0.2s; text-decoration: none;
+      }
+      .lp-toolbar .lp-nav a:hover { border-color: #667eea; color: #667eea; }
+      .lp-toolbar .lp-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-left: auto; align-items: center; }
+      .lp-btn {
+        display: inline-flex; align-items: center; gap: 6px;
+        padding: 8px 16px; border-radius: 50px; border: 2px solid #e2e8f0;
+        background: #fff; color: #475569; font-weight: 600; font-size: 0.82rem;
+        cursor: pointer; transition: all 0.2s;
+      }
+      .lp-btn:hover { border-color: #667eea; color: #667eea; }
+      .lp-btn.primary { background: linear-gradient(135deg,#667eea,#764ba2); color: #fff; border-color: transparent; }
+      .lp-btn.primary:hover { box-shadow: 0 4px 15px rgba(102,126,234,0.4); }
+      .lp-btn.danger { color: #ef4444; }
+      .lp-btn.danger:hover { border-color: #ef4444; }
+      .lp-file-input { display: none; }
+      .lp-save-state { color: #94a3b8; font-size: 0.82rem; }
+
+      /* Hero grid */
+      .lp-hero-grid { display: grid; grid-template-columns: 1.35fr 0.9fr; gap: 20px; margin-bottom: 24px; }
+      .lp-hero-card {
+        background: linear-gradient(135deg, #fff 0%, #eef2ff 100%);
+        border: 1px solid #f1f5f9; border-radius: 20px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.04); padding: 32px;
+        position: relative; overflow: hidden;
+      }
+      .lp-hero-card::after {
+        content: ""; position: absolute; width: 200px; height: 200px;
+        border-radius: 50%; right: -70px; top: -60px;
+        background: linear-gradient(135deg, rgba(102,126,234,0.15), rgba(118,75,162,0.08));
+      }
+      .lp-kicker {
+        display: inline-flex; padding: 6px 14px; border-radius: 50px;
+        background: rgba(102,126,234,0.1); border: 1px solid rgba(102,126,234,0.2);
+        color: #667eea; font-size: 0.78rem; font-weight: 700;
+        text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 14px;
+      }
+      .lp-hero-card h2 {
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: clamp(1.8rem, 3.5vw, 2.8rem); font-weight: 800;
+        line-height: 1.1; margin: 0 0 14px; letter-spacing: -0.03em; color: #0f172a;
+      }
+      .lp-hero-card .lede { color: #64748b; font-size: 1rem; margin: 0; line-height: 1.6; }
+      .lp-print-note {
+        border: 1px dashed #e2e8f0; border-radius: 12px; background: #f8faff;
+        padding: 12px 16px; color: #94a3b8; font-size: 0.88rem; margin-top: 14px;
+      }
+
+      .lp-side-panel {
+        background: #fff; border: 1px solid #f1f5f9; border-radius: 20px;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.03); padding: 22px; display: grid; gap: 12px;
+      }
+      .lp-stat-card {
+        background: #f8faff; border: 1px solid #f1f5f9; border-radius: 14px; padding: 16px;
+      }
+      .lp-stat-label {
+        color: #94a3b8; font-size: 0.75rem; text-transform: uppercase;
+        letter-spacing: 0.09em; font-weight: 700;
+      }
+      .lp-stat-value {
+        font-family: 'Space Grotesk', sans-serif; font-size: 1.4rem;
+        font-weight: 800; margin-top: 4px; color: #1e293b;
+      }
+      .lp-stat-note { color: #94a3b8; font-size: 0.84rem; margin-top: 4px; }
+
+      /* Panels */
+      .lp-panel {
+        background: #fff; border: 1px solid #f1f5f9; border-radius: 20px;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.03); padding: 28px; margin-bottom: 20px;
+      }
+      .lp-panel h2 {
+        font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem;
+        font-weight: 800; margin: 0 0 6px; color: #1e293b;
+      }
+      .lp-panel h3 {
+        font-family: 'Space Grotesk', sans-serif; font-size: 1.08rem;
+        font-weight: 700; margin: 18px 0 10px; color: #334155;
+      }
+      .lp-panel-head {
+        display: flex; gap: 12px; justify-content: space-between;
+        align-items: flex-start; margin-bottom: 18px; flex-wrap: wrap;
+      }
+      .lp-panel-head p { color: #94a3b8; margin: 6px 0 0; font-size: 0.92rem; }
+      .lp-muted { color: #94a3b8; }
+
+      /* Badges */
+      .lp-badge-row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+      .lp-badge {
+        display: inline-flex; align-items: center; gap: 5px; border-radius: 50px;
+        border: 1px solid #e2e8f0; background: #f8faff; color: #94a3b8;
+        font-weight: 700; font-size: 0.76rem; padding: 5px 10px; white-space: nowrap;
+      }
+      .lp-badge.good { color: #0f766e; background: #ecfdf5; border-color: #a7f3d0; }
+      .lp-badge.warning { color: #b45309; background: #fff7ed; border-color: #fed7aa; }
+      .lp-badge.danger { color: #b91c1c; background: #fef2f2; border-color: #fecaca; }
+      .lp-badge.accent { color: #667eea; background: rgba(102,126,234,0.1); border-color: rgba(102,126,234,0.25); }
+
+      /* Form fields */
+      .lp-field-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; }
+      .lp-field-grid.three { grid-template-columns: repeat(3,1fr); }
+      .lp-field-grid.two { grid-template-columns: repeat(2,1fr); }
+      .lp-field { min-width: 0; }
+      .lp-field label {
+        display: block; font-size: 0.76rem; font-weight: 700; color: #94a3b8;
+        text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 6px;
+      }
+      .lp-panel input[type="text"], .lp-panel input[type="number"],
+      .lp-panel input[type="date"], .lp-panel select, .lp-panel textarea {
+        width: 100%; border: 2px solid #e2e8f0; border-radius: 12px;
+        padding: 10px 14px; font: inherit; color: #1e293b;
+        background: #f8faff; transition: border-color 0.2s;
+      }
+      .lp-panel input:focus, .lp-panel select:focus, .lp-panel textarea:focus {
+        outline: none; border-color: #667eea; background: #fff;
+      }
+      .lp-panel textarea { min-height: 88px; resize: vertical; }
+
+      /* Progress */
+      .lp-progress-wrap {
+        margin: 12px 0 0; background: #f1f5f9; border-radius: 50px;
+        height: 12px; overflow: hidden; border: 1px solid #e2e8f0;
+      }
+      .lp-progress-fill {
+        height: 100%; width: 0%; border-radius: 50px;
+        background: linear-gradient(90deg, #667eea, #764ba2); transition: width 0.3s ease;
+      }
+      .lp-progress-meta {
+        display: flex; justify-content: space-between; gap: 10px;
+        color: #94a3b8; font-size: 0.84rem; margin-top: 6px;
+      }
+
+      /* Readiness */
+      .lp-readiness-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 14px; }
+      .lp-readiness-card {
+        border: 1px solid #f1f5f9; border-radius: 16px; padding: 16px; background: #f8faff;
+      }
+      .lp-readiness-card h3 { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-wrap: wrap; }
+      .lp-criteria { margin: 12px 0 0; padding: 0; list-style: none; display: grid; gap: 8px; }
+      .lp-criteria li { display: flex; align-items: flex-start; gap: 8px; color: #64748b; font-size: 0.9rem; }
+      .lp-criteria .dot {
+        width: 18px; height: 18px; border-radius: 50%; display: inline-grid;
+        place-items: center; flex: 0 0 18px; margin-top: 1px;
+        font-size: 0.7rem; font-weight: 900;
+      }
+      .lp-criteria .done .dot { background: #ecfdf5; color: #0f766e; }
+      .lp-criteria .not .dot { background: #fff7ed; color: #b45309; }
+      .lp-criteria .unknown .dot { background: #f1f5f9; color: #94a3b8; }
+
+      /* Tables */
+      .lp-panel table { width: 100%; border-collapse: collapse; font-size: 0.9rem; margin: 12px 0; }
+      .lp-panel th, .lp-panel td { text-align: left; vertical-align: top; border: 1px solid #f1f5f9; padding: 10px 12px; }
+      .lp-panel th { background: #f8faff; color: #64748b; font-size: 0.76rem; text-transform: uppercase; letter-spacing: 0.06em; font-weight: 700; }
+      .lp-panel td { background: #fff; }
+
+      /* Grid layouts */
+      .lp-grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+      .lp-grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 14px; }
+
+      /* Checklists */
+      .lp-checklist, .lp-decision-list { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+      .lp-checklist li, .lp-decision-list li {
+        border: 1px solid #f1f5f9; border-radius: 14px; padding: 12px; background: #f8faff;
+      }
+      .lp-checkline { display: grid; grid-template-columns: 24px 1fr; gap: 8px; align-items: start; cursor: pointer; }
+      .lp-checkline input { width: 17px; height: 17px; margin-top: 2px; }
+
+      /* Timeline / Phases */
+      .lp-timeline { display: grid; gap: 16px; }
+      .lp-phase-band {
+        border: 1px solid #f1f5f9; border-radius: 20px;
+        background: linear-gradient(180deg, #fff 0%, #fafbff 100%);
+        padding: 22px; box-shadow: 0 2px 12px rgba(0,0,0,0.03);
+      }
+      .lp-phase-head {
+        display: flex; align-items: flex-start; justify-content: space-between;
+        gap: 12px; border-bottom: 1px solid #f1f5f9; padding-bottom: 14px;
+        margin-bottom: 16px; flex-wrap: wrap;
+      }
+      .lp-phase-head .phase-title { display: grid; gap: 5px; }
+      .lp-phase-head .phase-title span {
+        color: #667eea; font-weight: 700; font-size: 0.82rem;
+        text-transform: uppercase; letter-spacing: 0.08em;
+      }
+      .lp-phase-head .phase-title h3 { font-family: 'Space Grotesk', sans-serif; }
+      .lp-phase-head .phase-title p { color: #94a3b8; font-size: 0.9rem; margin: 4px 0 0; }
+
+      .lp-week-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 14px; }
+      .lp-week-card {
+        border: 1px solid #f1f5f9; border-radius: 16px; background: #fff; overflow: hidden;
+      }
+      .lp-week-top {
+        padding: 14px 16px 12px; border-bottom: 1px solid #f1f5f9;
+        display: flex; align-items: flex-start; justify-content: space-between;
+        gap: 12px; background: #fafbff;
+      }
+      .lp-week-title-block { display: grid; gap: 4px; }
+      .lp-week-title-block h3 { font-size: 1rem; }
+      .lp-week-dates { color: #94a3b8; font-size: 0.82rem; font-weight: 600; }
+      .lp-week-top select {
+        border: 2px solid #e2e8f0; border-radius: 10px; padding: 6px 10px;
+        font-size: 0.82rem; font-weight: 600; background: #fff; color: #475569;
+      }
+      .lp-week-body { padding: 16px; display: grid; gap: 12px; }
+      .lp-objective {
+        background: rgba(102,126,234,0.08); border: 1px solid rgba(102,126,234,0.18);
+        color: #4338ca; border-radius: 12px; padding: 10px 14px; font-size: 0.9rem;
+      }
+      .lp-tasks { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
+      .lp-task-row { display: grid; grid-template-columns: 22px 1fr; gap: 8px; align-items: start; }
+      .lp-task-row input[type="checkbox"] { width: 17px; height: 17px; margin-top: 2px; }
+      .lp-task-text { min-height: 22px; padding: 2px 4px; border-radius: 6px; outline: none; font-size: 0.9rem; color: #334155; }
+      .lp-task-text:focus, [contenteditable="true"]:focus { box-shadow: 0 0 0 3px rgba(102,126,234,0.15); background: #fff; }
+      .lp-task-row.done .lp-task-text { text-decoration: line-through; color: #94a3b8; }
+      .lp-deliverable {
+        border: 1px solid #f1f5f9; background: #fafbff; border-radius: 12px;
+        padding: 10px 14px; display: grid; gap: 6px;
+      }
+      .lp-deliverable strong { font-size: 0.78rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.08em; }
+      .lp-editable-box { min-height: 22px; outline: none; border-radius: 6px; padding: 2px 4px; font-size: 0.9rem; }
+      .lp-notes-area { min-height: 70px; }
+      .lp-small-btn {
+        padding: 6px 14px; font-size: 0.8rem; border-radius: 50px;
+        border: 2px solid #e2e8f0; background: #fff; color: #475569;
+        font-weight: 600; cursor: pointer; transition: all 0.2s;
+      }
+      .lp-small-btn:hover { border-color: #667eea; color: #667eea; }
+
+      /* Source cards */
+      .lp-source-grid { display: grid; grid-template-columns: repeat(2,1fr); gap: 12px; }
+      .lp-source-card {
+        background: #f8faff; border: 1px solid #f1f5f9; border-radius: 14px;
+        padding: 16px; box-shadow: none;
+      }
+      .lp-source-card strong { display: block; margin-bottom: 4px; font-size: 0.92rem; color: #334155; }
+      .lp-source-card p { margin: 0; color: #64748b; font-size: 0.88rem; line-height: 1.5; }
+      .lp-source-card a { color: #667eea; font-weight: 600; }
+
+      .lp-footer-note { color: #94a3b8; text-align: center; margin: 24px 0 0; font-size: 0.85rem; }
+      .print-only { display: none; }
+
+      @media (max-width: 968px) {
+        .lp-hero-grid, .lp-grid-2, .lp-readiness-grid, .lp-week-grid, .lp-source-grid { grid-template-columns: 1fr; }
+        .lp-field-grid, .lp-field-grid.three { grid-template-columns: repeat(2,1fr); }
+        .lp-grid-3 { grid-template-columns: 1fr; }
+      }
+      @media (max-width: 640px) {
+        .lp-field-grid, .lp-field-grid.two, .lp-field-grid.three { grid-template-columns: 1fr; }
+        .lp-phase-head, .lp-panel-head, .lp-week-top { flex-direction: column; }
+      }
+      @media print {
+        body * { visibility: hidden; }
+        .lp, .lp * { visibility: visible; }
+        .lp { position: absolute; left: 0; top: 0; width: 100%; padding: 0.5in; }
+        .navbar, .footer, .lp-toolbar, .no-print, button, .lp-btn, .lp-small-btn { display: none !important; }
+        .print-only { display: block; }
+        .lp-panel, .lp-phase-band, .lp-week-card, .lp-source-card, .lp-stat-card, .lp-readiness-card { box-shadow: none !important; break-inside: avoid; }
+        .lp-hero-card { background: #fff; }
+        .lp-hero-card::after { display: none; }
+        .page-break { break-before: page; page-break-before: always; }
+      }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo"><span class="logo-icon">&#9881;</span> Career Craft</a>
+            <button class="nav-toggle" aria-label="Toggle navigation"><span></span><span></span><span></span></button>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="explore.html" class="nav-link">Explore Careers</a></li>
+                <li><a href="advice.html" class="nav-link">Career Advice</a></li>
+                <li><a href="resume.html" class="nav-link">Build Resume</a></li>
+                <li><a href="agent.html" class="nav-link">AI Agent</a></li>
+                <li><a href="degree-path.html" class="nav-link">Degree Board</a></li>
+                <li><a href="launch-plan.html" class="nav-link cta-button active">90-Day Plan</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="page-hero">
+        <div class="container">
+            <span class="section-tag">Action Planner</span>
+            <h1>90-Day Career <span class="gradient-text">Launch Plan</span></h1>
+            <p>Turn your degree decision into action with a week-by-week plan covering transfer readiness, applications, skill building, and portfolio work.</p>
+        </div>
+    </section>
+
+    <section class="lp">
+        <div class="container">
+            <!-- Toolbar -->
+            <div class="lp-toolbar no-print">
+                <div class="lp-nav">
+                    <a href="#snapshot">Snapshot</a>
+                    <a href="#readiness">Readiness</a>
+                    <a href="#roadmap">Roadmap</a>
+                    <a href="#skill-sprint">Skill Sprint</a>
+                    <a href="#portfolio">Portfolio</a>
+                    <a href="#sources">Sources</a>
+                </div>
+                <div class="lp-actions">
+                    <button class="lp-btn primary" id="printBtn" type="button">Export to PDF</button>
+                    <button class="lp-btn" id="exportBtn" type="button">Export JSON</button>
+                    <label class="lp-btn" for="importFile">Import JSON</label>
+                    <input id="importFile" type="file" accept="application/json" class="lp-file-input" />
+                    <button class="lp-btn danger" id="resetBtn" type="button">Reset</button>
+                    <span class="lp-save-state" id="savedStatus">Not saved yet</span>
+                </div>
+            </div>
+
+            <!-- Hero Grid -->
+            <div class="lp-hero-grid">
+                <div class="lp-hero-card">
+                    <div class="lp-kicker">90-Day Career Launch Plan</div>
+                    <h2>Turn the degree decision into action.</h2>
+                    <p class="lede">This editable plan is built around your degree-path decision board: UNC Charlotte AI-Assisted Software Engineering as the high-upside technical path, ECU MIS as the safer tech-business alternate, and a portfolio project that makes the whole process visible.</p>
+                    <div class="lp-print-note">Use this as the living plan. Update your personal transfer reality, check off weekly tasks, add advisor notes, export JSON backups, and use Export to PDF whenever you want a clean snapshot.</div>
+                </div>
+                <aside class="lp-side-panel">
+                    <div class="lp-stat-card">
+                        <div class="lp-stat-label">Plan Window</div>
+                        <div class="lp-stat-value"><span id="startDisplay">May 29, 2026</span> &ndash; <span id="endDisplay">Aug 26, 2026</span></div>
+                        <div class="lp-stat-note">Change the start date below and the weekly dates update automatically.</div>
+                    </div>
+                    <div class="lp-stat-card">
+                        <div class="lp-stat-label">Overall Progress</div>
+                        <div class="lp-stat-value" id="progressText">0%</div>
+                        <div class="lp-progress-wrap"><div class="lp-progress-fill" id="progressFill"></div></div>
+                        <div class="lp-progress-meta"><span id="taskDoneText">0 of 0 tasks complete</span><span id="activePhaseText">Phase 1</span></div>
+                    </div>
+                    <div class="lp-stat-card">
+                        <div class="lp-stat-label">Primary Goal</div>
+                        <div class="lp-stat-value" id="primaryGoalDisplay">Choose and prepare</div>
+                        <div class="lp-stat-note">Degree path, transfer readiness, application packet, skill sprint, and portfolio MVP.</div>
+                    </div>
+                </aside>
+            </div>
+
+            <!-- 1. Snapshot -->
+            <div class="lp-panel" id="snapshot">
+                <div class="lp-panel-head">
+                    <div><h2>1. Personal transfer reality snapshot</h2><p>Update this as your credits, GPA, advisor answers, and preferred path change.</p></div>
+                    <div class="lp-badge-row"><span class="lp-badge accent">Autosaves in this browser</span><span class="lp-badge" id="savedBadge">Not saved yet</span></div>
+                </div>
+                <div class="lp-field-grid">
+                    <div class="lp-field"><label for="studentName">Name / label</label><input id="studentName" data-save="studentName" type="text" placeholder="My 90-day plan" /></div>
+                    <div class="lp-field"><label for="startDate">Start date</label><input id="startDate" data-save="startDate" type="date" value="2026-05-29" /></div>
+                    <div class="lp-field"><label for="targetTerm">Target start term</label><select id="targetTerm" data-save="targetTerm"><option>Fall 2026</option><option>Spring 2027</option><option>Summer 2027</option><option>Fall 2027</option><option>Still deciding</option></select></div>
+                    <div class="lp-field"><label for="weeklyHours">Hours per week available</label><input id="weeklyHours" data-save="weeklyHours" type="number" min="0" step="0.5" value="6" /></div>
+                </div>
+                <div class="lp-field-grid" style="margin-top:12px;">
+                    <div class="lp-field"><label for="primaryPath">Primary path</label><select id="primaryPath" data-save="primaryPath"><option>UNC Charlotte AI-Assisted Software Engineering</option><option>ECU MIS</option><option>Other online AI/CS/MIS option</option><option>Undecided</option></select></div>
+                    <div class="lp-field"><label for="backupPath">Backup path</label><select id="backupPath" data-save="backupPath"><option>ECU MIS</option><option>UNC Charlotte AI-Assisted Software Engineering</option><option>Other online AI/CS/MIS option</option><option>Undecided</option></select></div>
+                    <div class="lp-field"><label for="currentCredits">Transferable credits</label><input id="currentCredits" data-save="currentCredits" type="number" min="0" step="1" placeholder="0" /></div>
+                    <div class="lp-field"><label for="currentGpa">Cumulative GPA</label><input id="currentGpa" data-save="currentGpa" type="number" min="0" max="4" step="0.01" placeholder="0.00" /></div>
+                </div>
+                <div class="lp-field-grid three" style="margin-top:12px;">
+                    <div class="lp-field"><label for="mathStatus">College algebra / math status</label><select id="mathStatus" data-save="mathStatus"><option>Unknown</option><option>Completed college algebra or higher with C or better</option><option>Currently enrolled</option><option>Need to take</option><option>Need advisor review</option></select></div>
+                    <div class="lp-field"><label for="csStatus">Prior CS/programming grades</label><select id="csStatus" data-save="csStatus"><option>Unknown / none attempted</option><option>All attempted CS courses C or higher</option><option>One or more below C</option><option>Currently enrolled</option><option>Need advisor review</option></select></div>
+                    <div class="lp-field"><label for="codingComfort">Coding comfort</label><select id="codingComfort" data-save="codingComfort"><option>Beginner</option><option>Some exposure</option><option>Comfortable with basics</option><option>Ready for project work</option><option>Unsure</option></select></div>
+                </div>
+                <div class="lp-field-grid two" style="margin-top:12px;">
+                    <div class="lp-field"><label for="biggestRisk">Biggest risk right now</label><textarea id="biggestRisk" data-save="biggestRisk" placeholder="Example: not knowing how credits transfer, coding confidence, application deadlines, cost, math readiness..."></textarea></div>
+                    <div class="lp-field"><label for="weeklyRoutine">Weekly work routine</label><textarea id="weeklyRoutine" data-save="weeklyRoutine" placeholder="Example: two 90-minute weeknight blocks plus one weekend review block."></textarea></div>
+                </div>
+            </div>
+
+            <!-- 2. Readiness -->
+            <div class="lp-panel" id="readiness">
+                <div class="lp-panel-head">
+                    <div><h2>2. Transfer readiness checks</h2><p>Planning checks based on requirements from your decision board. Always confirm final eligibility with the schools.</p></div>
+                    <div class="lp-badge-row"><span class="lp-badge warning">Planning aid, not an admissions decision</span></div>
+                </div>
+                <div class="lp-readiness-grid">
+                    <div class="lp-readiness-card"><h3>UNC Charlotte AI-Assisted Software Engineering <span id="unccBadge" class="lp-badge">Unknown</span></h3><ul class="lp-criteria" id="unccCriteria"></ul></div>
+                    <div class="lp-readiness-card"><h3>ECU Management Information Systems <span id="ecuBadge" class="lp-badge">Unknown</span></h3><ul class="lp-criteria" id="ecuCriteria"></ul></div>
+                </div>
+            </div>
+
+            <!-- 3. Critical Dates -->
+            <div class="lp-panel" id="critical-dates">
+                <div class="lp-panel-head"><div><h2>3. Critical dates and application checkpoints</h2><p>Because Fall 2026 deadlines fall inside this 90-day window, the first month is intentionally deadline-heavy.</p></div></div>
+                <div class="lp-grid-2">
+                    <div><table><thead><tr><th>Checkpoint</th><th>Target / official date</th><th>Action</th></tr></thead><tbody>
+                        <tr><td>UNC Charlotte Fall transfer application</td><td>July 1, 2026</td><td>Submit application and fee before this date if targeting Fall 2026.</td></tr>
+                        <tr><td>UNC Charlotte Fall transfer documents</td><td>July 15, 2026</td><td>Send official transcripts and documents; do not wait until current courses are finalized.</td></tr>
+                        <tr><td>ECU Fall transfer application</td><td>July 6, 2026</td><td>Submit ECU application if keeping MIS as backup or alternate.</td></tr>
+                        <tr><td>Decision board update</td><td>Weekly</td><td>Update scores after each advisor answer or transcript review.</td></tr>
+                        <tr><td>Portfolio MVP</td><td>By Day 75</td><td>Have the AI Degree Finder usable, even if simple.</td></tr>
+                        <tr><td>Final 90-day review</td><td>Day 90</td><td>Choose next term action plan and update your master decision board.</td></tr>
+                    </tbody></table></div>
+                    <div>
+                        <ul class="lp-checklist">
+                            <li><label class="lp-checkline"><input type="checkbox" data-task="critical-uncc-app" /><span>UNC Charlotte application started or submitted.</span></label></li>
+                            <li><label class="lp-checkline"><input type="checkbox" data-task="critical-uncc-docs" /><span>UNC Charlotte transcripts/documents requested or sent.</span></label></li>
+                            <li><label class="lp-checkline"><input type="checkbox" data-task="critical-ecu-app" /><span>ECU application started or submitted.</span></label></li>
+                            <li><label class="lp-checkline"><input type="checkbox" data-task="critical-advisors" /><span>Advisor questions sent to both programs.</span></label></li>
+                            <li><label class="lp-checkline"><input type="checkbox" data-task="critical-backup" /><span>Backup plan chosen if Fall 2026 deadline is missed.</span></label></li>
+                        </ul>
+                        <div class="lp-print-note" style="margin-top:12px;"><strong>Fallback rule:</strong> If Fall 2026 deadlines are missed or not realistic, convert Weeks 3-4 into Spring 2027 preparation, keep the skill sprint, and use the extra time to improve GPA, math readiness, coding confidence, and portfolio quality.</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4. Roadmap -->
+            <div class="lp-panel" id="roadmap">
+                <div class="lp-panel-head">
+                    <div><h2>4. The 90-day roadmap</h2><p>Each week has an objective, task checklist, deliverable, status, and notes. Edit anything directly.</p></div>
+                    <div class="lp-badge-row"><span class="lp-badge good" id="roadmapCount">0 tasks complete</span></div>
+                </div>
+                <div class="lp-timeline" id="timeline"></div>
+            </div>
+
+            <!-- 5. Skill Sprint -->
+            <div class="lp-panel page-break" id="skill-sprint">
+                <div class="lp-panel-head"><div><h2>5. Technical skill sprint menu</h2><p>Use this to choose the Month 2 skill track. The goal is not to master everything; it is to build enough ability to create the portfolio project.</p></div></div>
+                <div class="lp-grid-3">
+                    <div class="lp-readiness-card"><h3>Track A: AI-assisted software builder</h3><p class="lp-muted">Best match for UNC Charlotte AI-Assisted Software Engineering.</p><ul class="lp-criteria"><li><span class="dot">1</span><span>HTML/CSS/JavaScript basics</span></li><li><span class="dot">2</span><span>GitHub and project README habits</span></li><li><span class="dot">3</span><span>Build a local-storage web app</span></li><li><span class="dot">4</span><span>Use AI tools to debug, refactor, and document code</span></li></ul></div>
+                    <div class="lp-readiness-card"><h3>Track B: MIS / business systems</h3><p class="lp-muted">Best match for ECU MIS and business analyst roles.</p><ul class="lp-criteria"><li><span class="dot">1</span><span>SQL basics: tables, filters, joins, grouping</span></li><li><span class="dot">2</span><span>Business requirements and process mapping</span></li><li><span class="dot">3</span><span>Dashboard or spreadsheet model</span></li><li><span class="dot">4</span><span>Write a short systems-analysis case study</span></li></ul></div>
+                    <div class="lp-readiness-card"><h3>Track C: balanced bridge</h3><p class="lp-muted">Best if you are still deciding between software and MIS.</p><ul class="lp-criteria"><li><span class="dot">1</span><span>HTML/CSS/JS for the front end</span></li><li><span class="dot">2</span><span>SQL for data and requirements</span></li><li><span class="dot">3</span><span>One project combining scoring, data, and a clear user problem</span></li><li><span class="dot">4</span><span>A README that explains the business value</span></li></ul></div>
+                </div>
+                <div class="lp-field-grid two" style="margin-top:14px;">
+                    <div class="lp-field"><label for="chosenSkillTrack">Chosen skill track</label><select id="chosenSkillTrack" data-save="chosenSkillTrack"><option>Track C: balanced bridge</option><option>Track A: AI-assisted software builder</option><option>Track B: MIS / business systems</option><option>Still deciding</option></select></div>
+                    <div class="lp-field"><label for="skillResources">Resources / courses / notes</label><textarea id="skillResources" data-save="skillResources" placeholder="Add the tutorials, books, courses, or practice resources you decide to use."></textarea></div>
+                </div>
+            </div>
+
+            <!-- 6. Portfolio -->
+            <div class="lp-panel" id="portfolio">
+                <div class="lp-panel-head"><div><h2>6. Portfolio project: AI Degree Finder</h2><p>This project turns your actual decision into something you can show. It demonstrates problem-solving, data organization, UX thinking, and AI-assisted building.</p></div><span class="lp-badge accent">Target MVP by Day 75</span></div>
+                <div class="lp-grid-2">
+                    <div><h3>Minimum viable version</h3><ul class="lp-checklist" style="margin-top:10px;">
+                        <li><label class="lp-checkline"><input type="checkbox" data-task="portfolio-program-cards" /><span>Program cards for UNC Charlotte AI-Assisted SWE, ECU MIS, and other option.</span></label></li>
+                        <li><label class="lp-checkline"><input type="checkbox" data-task="portfolio-weighted-score" /><span>Weighted scoring model with editable weights and scores.</span></label></li>
+                        <li><label class="lp-checkline"><input type="checkbox" data-task="portfolio-transfer-fields" /><span>Transfer reality fields for credits, GPA, math, programming, and target term.</span></label></li>
+                        <li><label class="lp-checkline"><input type="checkbox" data-task="portfolio-ranking" /><span>Automatic ranking and recommendation summary.</span></label></li>
+                        <li><label class="lp-checkline"><input type="checkbox" data-task="portfolio-readme" /><span>README or project summary explaining the problem, audience, and what you learned.</span></label></li>
+                    </ul></div>
+                    <div><h3>Stretch version</h3><ul class="lp-checklist" style="margin-top:10px;">
+                        <li><label class="lp-checkline"><input type="checkbox" data-task="portfolio-json" /><span>JSON import/export so progress can be backed up.</span></label></li>
+                        <li><label class="lp-checkline"><input type="checkbox" data-task="portfolio-pdf" /><span>Print/export-to-PDF view for decision snapshots.</span></label></li>
+                        <li><label class="lp-checkline"><input type="checkbox" data-task="portfolio-course-map" /><span>Course map showing likely remaining requirements.</span></label></li>
+                        <li><label class="lp-checkline"><input type="checkbox" data-task="portfolio-deploy" /><span>Deploy with GitHub Pages or another simple static host.</span></label></li>
+                        <li><label class="lp-checkline"><input type="checkbox" data-task="portfolio-case-study" /><span>Short case study: how the tool changed your degree decision.</span></label></li>
+                    </ul></div>
+                </div>
+                <div class="lp-field-grid two" style="margin-top:14px;">
+                    <div class="lp-field"><label for="projectScope">Project scope notes</label><textarea id="projectScope" data-save="projectScope" placeholder="What will be included in version 1? What will be intentionally left out?"></textarea></div>
+                    <div class="lp-field"><label for="projectProof">Proof to show later</label><textarea id="projectProof" data-save="projectProof" placeholder="Screenshots, GitHub link, README, short demo video, reflection, advisor feedback..."></textarea></div>
+                </div>
+            </div>
+
+            <!-- 7. Decision Rules -->
+            <div class="lp-panel" id="decision-rules">
+                <div class="lp-panel-head"><div><h2>7. Decision rules for the end of 90 days</h2><p>These rules prevent overthinking. Update them if your priorities change.</p></div></div>
+                <ul class="lp-decision-list">
+                    <li><strong>Choose UNC Charlotte AI-Assisted Software Engineering</strong> if the transfer path is feasible, coding feels hard but exciting, and you are willing to build projects consistently.</li>
+                    <li><strong>Choose ECU MIS</strong> if the business/tech bridge feels more sustainable, completion odds matter most, and you prefer systems, analysis, project management, or IT leadership over daily coding.</li>
+                    <li><strong>Choose another option</strong> if another online AI/CS/MIS program beats both on transfer fit, cost, flexibility, completion odds, and career alignment.</li>
+                    <li><strong>Delay the start term</strong> if the math, credit, GPA, application, or financial-aid reality makes rushing risky. Use the extra term for prerequisites, portfolio work, and advisor confirmation.</li>
+                </ul>
+                <div class="lp-field-grid two" style="margin-top:14px;">
+                    <div class="lp-field"><label for="finalDecision">Current final-decision leaning</label><textarea id="finalDecision" data-save="finalDecision" placeholder="Example: Primary target is UNC Charlotte, but ECU remains the safer backup until transfer credit review is complete."></textarea></div>
+                    <div class="lp-field"><label for="openQuestions">Open questions to resolve</label><textarea id="openQuestions" data-save="openQuestions" placeholder="List questions that still block a confident decision."></textarea></div>
+                </div>
+            </div>
+
+            <!-- 8. Sources -->
+            <div class="lp-panel" id="sources">
+                <div class="lp-panel-head"><div><h2>8. Source tracker</h2><p>Use these links to verify requirements and dates before applying. Source details can change.</p></div></div>
+                <div class="lp-source-grid">
+                    <div class="lp-source-card"><strong>UNC Charlotte - AI-Assisted Software Engineering B.A.</strong><p>Official program page. Used for online delivery, program focus, transfer requirements, 120 credits, and application deadlines.</p><p><a href="https://academics.charlotte.edu/program/computer-science-ai-assisted-software-engineering-concentration-b-a-online/" target="_blank" rel="noopener">Open source</a></p></div>
+                    <div class="lp-source-card"><strong>UNC Charlotte - Transfer admission deadlines</strong><p>Used for Fall/Spring/Summer transfer application and document deadline planning.</p><p><a href="https://admissions.charlotte.edu/apply/transfer-students/deadlines/" target="_blank" rel="noopener">Open source</a></p></div>
+                    <div class="lp-source-card"><strong>ECU - Transfer application deadlines</strong><p>Used for the Fall 2026 transfer application deadline and post-admission action steps.</p><p><a href="https://admissions.ecu.edu/transfers/how-to-apply/" target="_blank" rel="noopener">Open source</a></p></div>
+                    <div class="lp-source-card"><strong>ECU - Online undergraduate degree completion</strong><p>Used to confirm online BSBA concentration availability, including Management Information Systems.</p><p><a href="https://online.ecu.edu/online-programs-online-undergraduate-degree-completion-programs/" target="_blank" rel="noopener">Open source</a></p></div>
+                    <div class="lp-source-card"><strong>NC Course Transfer Guide - ECU MIS</strong><p>Used for ECU MIS transfer/admission notes and major declaration requirements.</p><p><a href="https://coursetransfer.northcarolina.edu/guide/2025-2026/578" target="_blank" rel="noopener">Open source</a></p></div>
+                    <div class="lp-source-card"><strong>Your degree-path decision board</strong><p>Use this as the companion file for scoring and program comparison. This planner turns that decision board into action.</p><p><a href="degree-path.html">Open Decision Board</a></p></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand"><a href="index.html" class="nav-logo"><span class="logo-icon">&#9881;</span> Career Craft</a><p>Helping you discover, plan, and build the career you deserve.</p></div>
+                <div class="footer-links"><div class="footer-col"><h4>Tools</h4><a href="explore.html">Career Explorer</a><a href="advice.html">Career Advice</a><a href="resume.html">Resume Builder</a><a href="agent.html">AI Resume Agent</a><a href="degree-path.html">Degree Board</a><a href="launch-plan.html">90-Day Plan</a></div></div>
+            </div>
+            <div class="footer-bottom"><p>&copy; 2026 Career Craft. Built to help you shine.</p></div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/launch-plan.js"></script>
+</body>
+</html>
