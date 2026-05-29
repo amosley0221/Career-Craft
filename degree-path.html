@@ -1,0 +1,598 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Degree Path Decision Board - Career Craft</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+      /* === Decision Board Page Styles === */
+      .db-page { padding: 40px 0 100px; }
+
+      .db-toolbar {
+        display: flex; gap: 10px; flex-wrap: wrap; align-items: center;
+        padding: 18px 24px; background: #fff; border-radius: 16px;
+        border: 1px solid #f1f5f9; box-shadow: 0 2px 12px rgba(0,0,0,0.03);
+        margin-bottom: 28px;
+      }
+      .db-toolbar .save-state { color: #94a3b8; font-size: 0.85rem; margin-left: auto; }
+      .db-btn {
+        display: inline-flex; align-items: center; gap: 6px;
+        padding: 8px 16px; border-radius: 50px; border: 2px solid #e2e8f0;
+        background: #fff; color: #475569; font-weight: 600; font-size: 0.85rem;
+        cursor: pointer; transition: all 0.2s;
+      }
+      .db-btn:hover { border-color: #667eea; color: #667eea; }
+      .db-btn.primary { background: linear-gradient(135deg,#667eea,#764ba2); color: #fff; border-color: transparent; }
+      .db-btn.primary:hover { box-shadow: 0 4px 15px rgba(102,126,234,0.4); }
+      .db-btn.danger { color: #ef4444; }
+      .db-btn.danger:hover { border-color: #ef4444; }
+      input[type="file"].db-file-input { display: none; }
+
+      .db-hero {
+        background: linear-gradient(135deg, #fff 0%, #eef2ff 100%);
+        border: 1px solid #f1f5f9; border-radius: 20px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.04); padding: 32px;
+        margin-bottom: 24px; position: relative; overflow: hidden;
+      }
+      .db-hero::after {
+        content: ""; position: absolute; width: 260px; height: 260px;
+        right: -110px; top: -90px; border-radius: 50%;
+        background: rgba(102,126,234,0.09);
+      }
+      .db-kicker {
+        text-transform: uppercase; letter-spacing: 0.1em;
+        color: #667eea; font-weight: 800; font-size: 0.78rem; margin: 0 0 8px;
+      }
+      .db-hero h2 {
+        font-family: 'Space Grotesk', sans-serif; font-size: clamp(1.8rem,3.5vw,2.8rem);
+        font-weight: 800; line-height: 1.1; margin: 0 0 12px; letter-spacing: -0.03em;
+      }
+      .db-hero .lead { font-size: 1.05rem; max-width: 840px; color: #475569; margin-bottom: 0; }
+      .db-hero .lead strong { color: #1e293b; }
+
+      .meta-row { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-top: 18px; }
+      .pill {
+        display: inline-flex; align-items: center; gap: 6px;
+        border: 1px solid #e2e8f0; border-radius: 50px; padding: 6px 14px;
+        background: rgba(255,255,255,0.8); color: #64748b; font-size: 0.85rem;
+      }
+      .pill strong { color: #1e293b; }
+
+      .db-grid { display: grid; grid-template-columns: repeat(12,1fr); gap: 20px; align-items: start; }
+      .db-card {
+        grid-column: span 12; background: #fff; border: 1px solid #f1f5f9;
+        border-radius: 20px; box-shadow: 0 2px 12px rgba(0,0,0,0.03);
+        padding: 28px; overflow: hidden;
+      }
+      .db-card h2 {
+        font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem;
+        font-weight: 800; margin: 0 0 14px; color: #1e293b;
+      }
+      .db-card h3 {
+        font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem;
+        font-weight: 700; margin: 18px 0 10px; color: #334155;
+      }
+      .span-4 { grid-column: span 4; }
+      .span-5 { grid-column: span 5; }
+      .span-6 { grid-column: span 6; }
+      .span-7 { grid-column: span 7; }
+      .span-8 { grid-column: span 8; }
+      .section-note { color: #94a3b8; font-size: 0.92rem; margin-top: -6px; margin-bottom: 14px; }
+
+      .callout {
+        border: 1px solid #e2e8f0; border-left: 5px solid #667eea;
+        background: rgba(102,126,234,0.06); padding: 14px 18px;
+        border-radius: 14px; margin: 14px 0; font-size: 0.92rem;
+      }
+      .callout.orange { background: #fff7ed; border-left-color: #f59e0b; }
+      .callout.green { background: #ecfdf5; border-left-color: #10b981; }
+      .callout.red { background: #fef2f2; border-left-color: #ef4444; }
+      .callout p:last-child { margin-bottom: 0; }
+      .callout p { margin: 0 0 8px; }
+
+      .db-card table {
+        width: 100%; border-collapse: collapse; margin: 12px 0 16px; font-size: 0.9rem;
+      }
+      .db-card th, .db-card td {
+        border: 1px solid #f1f5f9; padding: 10px 12px;
+        vertical-align: top; text-align: left;
+      }
+      .db-card th {
+        background: #f8faff; font-size: 0.78rem; text-transform: uppercase;
+        letter-spacing: 0.04em; color: #64748b; font-weight: 700;
+      }
+      .db-card tr:nth-child(even) td { background: #fafbff; }
+      .table-scroll { overflow-x: auto; }
+
+      .db-form-grid { display: grid; grid-template-columns: repeat(12,1fr); gap: 14px; }
+      label.db-field {
+        grid-column: span 6; display: flex; flex-direction: column; gap: 6px;
+        font-weight: 600; color: #475569; font-size: 0.88rem;
+      }
+      label.db-field.full { grid-column: span 12; }
+      label.db-field.third { grid-column: span 4; }
+      label.db-field.quarter { grid-column: span 3; }
+      .db-card input, .db-card select, .db-card textarea {
+        width: 100%; border: 2px solid #e2e8f0; border-radius: 12px;
+        padding: 10px 14px; font: inherit; color: #1e293b;
+        background: #f8faff; transition: border-color 0.2s;
+      }
+      .db-card input:focus, .db-card textarea:focus, .db-card select:focus {
+        outline: none; border-color: #667eea; background: #fff;
+      }
+      .db-card textarea { min-height: 80px; resize: vertical; }
+      .tiny-help { color: #94a3b8; font-size: 0.76rem; font-weight: 500; }
+
+      .eligibility-list { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 12px; margin-top: 16px; }
+      .status-card {
+        border: 1px solid #f1f5f9; border-radius: 16px; padding: 16px;
+        background: #fff; box-shadow: 0 1px 6px rgba(0,0,0,0.02);
+      }
+      .status-card strong { display: block; margin-bottom: 6px; font-size: 0.92rem; }
+      .status-card p { font-size: 0.85rem; color: #64748b; margin: 0 0 8px; }
+      .status {
+        display: inline-flex; align-items: center; gap: 5px;
+        padding: 4px 12px; border-radius: 50px; font-size: 0.78rem; font-weight: 700; margin-top: 6px;
+      }
+      .status.yes { color: #0f766e; background: #ecfdf5; border: 1px solid #a7f3d0; }
+      .status.no { color: #b91c1c; background: #fef2f2; border: 1px solid #fecaca; }
+      .status.maybe { color: #b45309; background: #fff7ed; border: 1px solid #fed7aa; }
+
+      .score-total {
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: 2.2rem; line-height: 1; font-weight: 900; letter-spacing: -0.04em;
+        background: linear-gradient(135deg,#667eea,#764ba2);
+        -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+      }
+      .score-total span { font-size: 1rem; letter-spacing: 0; }
+      .score-label { color: #94a3b8; font-size: 0.85rem; margin-top: 4px; }
+
+      .rank-cards { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 14px; margin: 16px 0; }
+      .rank-card {
+        border: 1px solid #f1f5f9; border-radius: 16px; padding: 18px;
+        background: #fff; box-shadow: 0 1px 6px rgba(0,0,0,0.02);
+      }
+      .rank-card .place {
+        font-family: 'Space Grotesk', sans-serif;
+        color: #667eea; font-weight: 900; font-size: 0.85rem;
+      }
+      .rank-card h3 { margin-top: 6px; }
+
+      .editable-table input, .editable-table textarea, .editable-table select {
+        border-radius: 10px; padding: 8px 10px; min-width: 80px; font-size: 0.88rem;
+      }
+      .editable-table textarea { min-height: 56px; min-width: 200px; }
+
+      .small-button {
+        padding: 6px 14px; font-size: 0.82rem; border-radius: 50px;
+        border: 2px solid #e2e8f0; background: #fff; color: #475569;
+        font-weight: 600; cursor: pointer; transition: all 0.2s;
+      }
+      .small-button:hover { border-color: #667eea; color: #667eea; }
+      .small-button.danger { color: #ef4444; }
+      .small-button.danger:hover { border-color: #ef4444; }
+
+      .db-card details {
+        border: 1px solid #f1f5f9; border-radius: 16px;
+        background: #fff; margin: 10px 0; overflow: hidden;
+      }
+      .db-card summary {
+        cursor: pointer; padding: 14px 18px; font-weight: 700;
+        background: #f8faff; color: #334155; font-size: 0.95rem;
+        font-family: 'Space Grotesk', sans-serif;
+      }
+      .db-card summary:hover { background: #eef2ff; }
+      .db-card details .detail-body { padding: 18px; border-top: 1px solid #f1f5f9; }
+      .db-card details .detail-body p { font-size: 0.92rem; color: #475569; line-height: 1.65; }
+
+      .db-footer-note { color: #94a3b8; text-align: center; margin: 28px 0 0; font-size: 0.88rem; }
+      .print-only { display: none; }
+
+      .num, .db-card input[type="number"] { text-align: right; font-variant-numeric: tabular-nums; }
+      .nowrap { white-space: nowrap; }
+      .db-card ul { margin-top: 8px; padding-left: 20px; }
+      .db-card li { margin: 6px 0; font-size: 0.92rem; color: #475569; }
+
+      @media (max-width: 968px) {
+        .span-4,.span-5,.span-6,.span-7,.span-8 { grid-column: span 12; }
+        label.db-field, label.db-field.third, label.db-field.quarter { grid-column: span 12; }
+        .eligibility-list, .rank-cards { grid-template-columns: 1fr; }
+        .db-hero { padding: 24px; }
+      }
+
+      @media print {
+        body * { visibility: hidden; }
+        .db-page, .db-page * { visibility: visible; }
+        .db-page { position: absolute; left: 0; top: 0; width: 100%; padding: 0.5in; }
+        .navbar, .footer, .db-toolbar, .no-print, button, .db-btn { display: none !important; }
+        .print-only { display: block; }
+        .db-card, .rank-card, .status-card, details { box-shadow: none !important; break-inside: avoid; }
+        .db-hero { background: #fff; border-radius: 0; border: 0; padding: 0 0 14px; }
+        .db-hero::after { display: none; }
+        .db-card { border-radius: 10px; padding: 14px; }
+        details:not([open]) .detail-body { display: block; }
+      }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <span class="logo-icon">&#9881;</span> Career Craft
+            </a>
+            <button class="nav-toggle" aria-label="Toggle navigation">
+                <span></span><span></span><span></span>
+            </button>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="explore.html" class="nav-link">Explore Careers</a></li>
+                <li><a href="advice.html" class="nav-link">Career Advice</a></li>
+                <li><a href="resume.html" class="nav-link">Build Resume</a></li>
+                <li><a href="agent.html" class="nav-link">AI Agent</a></li>
+                <li><a href="degree-path.html" class="nav-link cta-button active">Degree Board</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="page-hero">
+        <div class="container">
+            <span class="section-tag">Planning Tool</span>
+            <h1>Degree Path <span class="gradient-text">Decision Board</span></h1>
+            <p>An interactive, editable tracker to compare degree programs and find the best path for your career goals.</p>
+        </div>
+    </section>
+
+    <section class="db-page">
+        <div class="container">
+            <!-- Toolbar -->
+            <div class="db-toolbar no-print">
+                <button class="db-btn primary" id="printBtn" type="button">Export to PDF</button>
+                <button class="db-btn" id="saveBtn" type="button">Save Updates</button>
+                <button class="db-btn" id="exportJsonBtn" type="button">Export JSON</button>
+                <label class="db-btn" for="importJson">Import JSON</label>
+                <input id="importJson" type="file" accept="application/json" class="db-file-input" />
+                <button class="db-btn danger" id="resetBtn" type="button">Reset to V1</button>
+                <span class="save-state" id="saveState">Not saved this session</span>
+            </div>
+
+            <!-- Hero -->
+            <div class="db-hero">
+                <p class="db-kicker">Version 1 &mdash; Editable Decision Board</p>
+                <h2>Degree-Path Decision Board</h2>
+                <p class="lead"><strong>Main decision question:</strong> Which degree path gives you the best mix of career upside, online flexibility, transfer practicality, completion likelihood, and long-term fit?</p>
+                <div class="meta-row">
+                    <span class="pill"><strong>Primary target:</strong> UNC Charlotte Online B.A. Computer Science - AI-Assisted Software Engineering</span>
+                    <span class="pill"><strong>Alternate:</strong> ECU Online BSBA - Management Information Systems</span>
+                    <span class="pill"><strong>Watchlist:</strong> UNC Charlotte B.S. Artificial Intelligence</span>
+                </div>
+                <div class="meta-row db-form-grid" style="margin-top:18px;">
+                    <label class="db-field third">
+                        Last reviewed
+                        <input data-key="lastReviewed" type="date" value="2026-05-29" />
+                    </label>
+                    <label class="db-field third">
+                        Current decision status
+                        <select data-key="decisionStatus">
+                            <option value="Exploring">Exploring</option>
+                            <option value="UNC Charlotte target">UNC Charlotte target</option>
+                            <option value="ECU MIS target">ECU MIS target</option>
+                            <option value="Waiting on advisor/transfer eval">Waiting on advisor/transfer eval</option>
+                            <option value="Ready to apply">Ready to apply</option>
+                        </select>
+                    </label>
+                    <label class="db-field third">
+                        Snapshot label
+                        <input data-key="snapshotLabel" type="text" value="Version 1 baseline" />
+                    </label>
+                </div>
+                <p class="print-only"><strong>PDF snapshot note:</strong> This document was exported from the editable HTML dashboard. Program facts, tuition, and admissions requirements should be verified directly with each school before applying.</p>
+            </div>
+
+            <div class="db-grid">
+                <!-- 1. Candidates -->
+                <section class="db-card span-8" id="candidates">
+                    <h2>1. The Candidates</h2>
+                    <p class="section-note">These are the programs from the original Version 1 board, plus a watchlist option for a deeper AI path.</p>
+                    <div class="table-scroll">
+                        <table>
+                            <thead>
+                                <tr><th>Program</th><th>What it really is</th><th>Best for</th></tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>UNC Charlotte Online B.A. Computer Science: AI-Assisted Software Engineering</strong></td>
+                                    <td>A fully online 120-credit CS degree focused on software development, full-stack development, databases, front-end/back-end work, software architecture, AI-assisted software development, and capstone work. It is designed for first-year, transfer, and working students.</td>
+                                    <td>Becoming a software developer, full-stack developer, AI-adjacent developer, systems analyst, or technical project/product person.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>ECU Online BSBA Management Information Systems</strong></td>
+                                    <td>A business degree with a technology concentration. ECU describes MIS as integrating business and computing, with students learning information systems analysis/design, software project management, and tech-based business solutions. ECU says the online BSBA concentrations include MIS and that the degree is the same whether online or face-to-face.</td>
+                                    <td>Becoming a systems analyst, business analyst, IT project manager, technology consultant, ERP/business systems person, or future IT manager.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>UNC Charlotte B.S. Artificial Intelligence &mdash; Watchlist</strong></td>
+                                    <td>A 120-credit AI degree launching Fall 2026 with heavier math/computing/AI requirements, including Calculus I, data structures, machine learning, NLP/computer vision options, MLOps, AI security, and AI ethics.</td>
+                                    <td>A deeper AI/ML path, but probably higher difficulty and less clearly aligned with your online/flexible goal until delivery format is verified.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="callout green">
+                        <p><strong>Current read:</strong> UNC Charlotte AI-Assisted Software Engineering is the highest-upside target. ECU MIS is the safer tech-business alternate. UNC Charlotte B.S. Artificial Intelligence stays on the watchlist until its online/flexible fit is verified.</p>
+                    </div>
+                </section>
+
+                <!-- Current Ranking -->
+                <section class="db-card span-4" id="rankings">
+                    <h2>Current Ranking</h2>
+                    <div class="rank-cards" style="grid-template-columns:1fr;">
+                        <div class="rank-card">
+                            <div class="place">#1</div>
+                            <h3 id="rankOneName">UNC Charlotte AI-Assisted Software Engineering</h3>
+                            <p id="rankOneText" style="font-size:0.9rem;color:#64748b;">Best upside path if you are willing to commit to coding. Stronger technical identity: software, AI tools, databases, front end, back end, architecture, capstone, and portfolio potential.</p>
+                        </div>
+                        <div class="rank-card">
+                            <div class="place">#2</div>
+                            <h3 id="rankTwoName">ECU Management Information Systems</h3>
+                            <p id="rankTwoText" style="font-size:0.9rem;color:#64748b;">Safer, more business-friendly tech path. Likely higher completion probability and still useful for tech/business roles, but less pure coding strength.</p>
+                        </div>
+                    </div>
+                    <div class="callout orange">
+                        <p><strong>Core question:</strong> Do you want to become the person who builds software, or the person who manages, analyzes, and improves business technology systems?</p>
+                    </div>
+                </section>
+
+                <!-- 2. Personal Transfer Reality -->
+                <section class="db-card" id="personalReality">
+                    <h2>2. Personal Transfer Reality Tracker</h2>
+                    <p class="section-note">Update this over time as you finish classes, receive transfer evaluations, talk with advisors, or change your start-term goal.</p>
+                    <div class="db-form-grid">
+                        <label class="db-field quarter">Current transferable credits<input data-key="credits" id="credits" type="number" min="0" step="1" placeholder="e.g., 24" /></label>
+                        <label class="db-field quarter">Current cumulative GPA<input data-key="gpa" id="gpa" type="number" min="0" max="4" step="0.01" placeholder="e.g., 3.10" /></label>
+                        <label class="db-field quarter">NC resident?
+                            <select data-key="ncResident" id="ncResident">
+                                <option value="unknown">Unknown</option><option value="yes">Yes</option><option value="no">No</option>
+                            </select>
+                        </label>
+                        <label class="db-field quarter">Ideal start term<input data-key="startTerm" type="text" placeholder="e.g., Fall 2026" /></label>
+                        <label class="db-field third">College algebra / MATH 1100 equivalent
+                            <select data-key="math1100" id="math1100">
+                                <option value="unknown">Unknown / not verified</option><option value="completeC">Completed with C or better</option><option value="inProgress">In progress</option><option value="notYet">Not yet completed</option><option value="belowC">Completed below C</option>
+                            </select>
+                            <span class="tiny-help">Relevant for UNC Charlotte transfer readiness.</span>
+                        </label>
+                        <label class="db-field third">Calculus I status
+                            <select data-key="calculusStatus">
+                                <option value="unknown">Unknown / not verified</option><option value="complete">Completed</option><option value="inProgress">In progress</option><option value="notYet">Not yet completed</option><option value="notNeededCurrent">Probably not needed for current target</option>
+                            </select>
+                            <span class="tiny-help">More relevant to the B.S. Artificial Intelligence watchlist path.</span>
+                        </label>
+                        <label class="db-field third">ECU MIS declaration courses
+                            <select data-key="ecuDeclaration" id="ecuDeclaration">
+                                <option value="unknown">Unknown / not verified</option><option value="complete">All required declaration courses complete</option><option value="partial">Some complete</option><option value="notYet">Not yet started</option>
+                            </select>
+                            <span class="tiny-help">Version 1 noted eight declaration courses with C- or higher.</span>
+                        </label>
+                        <label class="db-field third">Programming / CS courses completed<textarea data-key="csCourses" placeholder="List courses, grades, tools, languages, or projects"></textarea></label>
+                        <label class="db-field third">Business / analytics courses completed<textarea data-key="businessCourses" placeholder="List accounting, economics, stats, business, Excel, SQL, etc."></textarea></label>
+                        <label class="db-field third">Weekly study capacity<textarea data-key="studyCapacity" placeholder="Hours per week, schedule constraints, energy level, work/family commitments"></textarea></label>
+                        <label class="db-field full">Advisor / transfer evaluation notes<textarea data-key="advisorNotes" placeholder="Paste advisor feedback, transfer evaluation summaries, missing requirements, and follow-up items"></textarea></label>
+                    </div>
+                    <h3>Eligibility Snapshot</h3>
+                    <div class="eligibility-list">
+                        <div class="status-card">
+                            <strong>UNC Charlotte transfer baseline</strong>
+                            <p>24+ transferable credits, 2.5+ cumulative GPA, C or higher in previously attempted CS courses, and C or better in college-level algebra equivalent to MATH 1100.</p>
+                            <span class="status maybe" id="uncEligibility">Add credits and GPA</span>
+                        </div>
+                        <div class="status-card">
+                            <strong>ECU transfer application baseline</strong>
+                            <p>24 transferable hours and a 2.0 cumulative GPA to apply as a transfer applicant.</p>
+                            <span class="status maybe" id="ecuApplyEligibility">Add credits and GPA</span>
+                        </div>
+                        <div class="status-card">
+                            <strong>ECU MIS declaration baseline</strong>
+                            <p>45 semester hours, 2.5 overall GPA, and completion of eight declaration courses with C- or higher.</p>
+                            <span class="status maybe" id="ecuDeclareEligibility">Add credits, GPA, and declaration courses</span>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 3. Scorecard -->
+                <section class="db-card" id="scorecard">
+                    <h2>3. Scoring Model &amp; Scorecard</h2>
+                    <p class="section-note">Scores are 1-5, with 5 being strongest. Update the numbers as your personal transfer reality changes.</p>
+                    <div class="rank-cards">
+                        <div class="rank-card">
+                            <div class="score-total"><span id="uncTotal">91.5</span><span> / 100</span></div>
+                            <div class="score-label">UNC Charlotte AI-Assisted Software Engineering</div>
+                        </div>
+                        <div class="rank-card">
+                            <div class="score-total"><span id="ecuTotal">81.5</span><span> / 100</span></div>
+                            <div class="score-label">ECU Management Information Systems</div>
+                        </div>
+                    </div>
+                    <div class="table-scroll">
+                        <table class="editable-table" id="scoreTable">
+                            <thead><tr><th>Category</th><th>Weight</th><th>Why it matters</th><th>UNC Charlotte AI-Assisted SWE</th><th>ECU MIS</th></tr></thead>
+                            <tbody>
+                                <tr><td><strong>Career ceiling and market demand</strong></td><td><input data-score="weight" data-row="0" type="number" min="0" max="100" step="0.5" value="20" /></td><td>You want the degree to open real income and mobility.</td><td><input data-score="unc" data-row="0" type="number" min="1" max="5" step="0.5" value="5" /></td><td><input data-score="ecu" data-row="0" type="number" min="1" max="5" step="0.5" value="4" /></td></tr>
+                                <tr><td><strong>Technical builder skill</strong></td><td><input data-score="weight" data-row="1" type="number" min="0" max="100" step="0.5" value="20" /></td><td>The more you can actually build, the more career leverage you have.</td><td><input data-score="unc" data-row="1" type="number" min="1" max="5" step="0.5" value="5" /></td><td><input data-score="ecu" data-row="1" type="number" min="1" max="5" step="0.5" value="3" /></td></tr>
+                                <tr><td><strong>Online/life fit</strong></td><td><input data-score="weight" data-row="2" type="number" min="0" max="100" step="0.5" value="15" /></td><td>A great degree is useless if the format does not fit your life.</td><td><input data-score="unc" data-row="2" type="number" min="1" max="5" step="0.5" value="5" /></td><td><input data-score="ecu" data-row="2" type="number" min="1" max="5" step="0.5" value="5" /></td></tr>
+                                <tr><td><strong>Transfer/admission path</strong></td><td><input data-score="weight" data-row="3" type="number" min="0" max="100" step="0.5" value="15" /></td><td>We need a realistic path in, not just a dream option.</td><td><input data-score="unc" data-row="3" type="number" min="1" max="5" step="0.5" value="4" /></td><td><input data-score="ecu" data-row="3" type="number" min="1" max="5" step="0.5" value="4.5" /></td></tr>
+                                <tr><td><strong>Completion probability</strong></td><td><input data-score="weight" data-row="4" type="number" min="0" max="100" step="0.5" value="15" /></td><td>The best degree is the one you can finish.</td><td><input data-score="unc" data-row="4" type="number" min="1" max="5" step="0.5" value="3.5" /></td><td><input data-score="ecu" data-row="4" type="number" min="1" max="5" step="0.5" value="4.5" /></td></tr>
+                                <tr><td><strong>Cost/value</strong></td><td><input data-score="weight" data-row="5" type="number" min="0" max="100" step="0.5" value="10" /></td><td>Public-school online affordability matters.</td><td><input data-score="unc" data-row="5" type="number" min="1" max="5" step="0.5" value="4.5" /></td><td><input data-score="ecu" data-row="5" type="number" min="1" max="5" step="0.5" value="4" /></td></tr>
+                                <tr><td><strong>Portfolio/story advantage</strong></td><td><input data-score="weight" data-row="6" type="number" min="0" max="100" step="0.5" value="5" /></td><td>The degree should help you tell a strong career story.</td><td><input data-score="unc" data-row="6" type="number" min="1" max="5" step="0.5" value="5" /></td><td><input data-score="ecu" data-row="6" type="number" min="1" max="5" step="0.5" value="3.5" /></td></tr>
+                            </tbody>
+                            <tfoot><tr><th>Total</th><th><span id="weightTotal">100</span>%</th><th>Weighted score = sum(weight x score / 5)</th><th><span id="uncTotalTable">91.5</span> / 100</th><th><span id="ecuTotalTable">81.5</span> / 100</th></tr></tfoot>
+                        </table>
+                    </div>
+                    <div class="callout" id="scoreWarning" style="display:none;">
+                        <p><strong>Weight note:</strong> Your weights no longer add to 100%. The totals still calculate from the exact weights entered, but you may want to rebalance them.</p>
+                    </div>
+                </section>
+
+                <!-- 4. Fit Matrix -->
+                <section class="db-card span-6" id="fitMatrix">
+                    <h2>4. Personal Fit Matrix</h2>
+                    <p class="section-note">This keeps the decision honest. Use plain-language answers.</p>
+                    <div class="table-scroll">
+                        <table class="editable-table" id="fitTable">
+                            <thead><tr><th>Question</th><th>UNC Charlotte AI-Assisted SWE</th><th>ECU MIS</th><th>Other option</th></tr></thead>
+                            <tbody>
+                                <tr><td>Do I want the jobs this prepares me for?</td><td><textarea data-key="fit_unc_jobs"></textarea></td><td><textarea data-key="fit_ecu_jobs"></textarea></td><td><textarea data-key="fit_other_jobs"></textarea></td></tr>
+                                <tr><td>Can I handle the workload?</td><td><textarea data-key="fit_unc_workload"></textarea></td><td><textarea data-key="fit_ecu_workload"></textarea></td><td><textarea data-key="fit_other_workload"></textarea></td></tr>
+                                <tr><td>Is it online/asynchronous enough?</td><td><textarea data-key="fit_unc_online"></textarea></td><td><textarea data-key="fit_ecu_online"></textarea></td><td><textarea data-key="fit_other_online"></textarea></td></tr>
+                                <tr><td>Will my credits transfer well?</td><td><textarea data-key="fit_unc_transfer"></textarea></td><td><textarea data-key="fit_ecu_transfer"></textarea></td><td><textarea data-key="fit_other_transfer"></textarea></td></tr>
+                                <tr><td>Does it build technical skills?</td><td><textarea data-key="fit_unc_technical"></textarea></td><td><textarea data-key="fit_ecu_technical"></textarea></td><td><textarea data-key="fit_other_technical"></textarea></td></tr>
+                                <tr><td>Does it give me portfolio material?</td><td><textarea data-key="fit_unc_portfolio"></textarea></td><td><textarea data-key="fit_ecu_portfolio"></textarea></td><td><textarea data-key="fit_other_portfolio"></textarea></td></tr>
+                                <tr><td>Would I still be motivated 18 months in?</td><td><textarea data-key="fit_unc_motivation"></textarea></td><td><textarea data-key="fit_ecu_motivation"></textarea></td><td><textarea data-key="fit_other_motivation"></textarea></td></tr>
+                                <tr><td>Does it match the lifestyle I want?</td><td><textarea data-key="fit_unc_lifestyle"></textarea></td><td><textarea data-key="fit_ecu_lifestyle"></textarea></td><td><textarea data-key="fit_other_lifestyle"></textarea></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- 5. Decision Notes -->
+                <section class="db-card span-6" id="decisionNotes">
+                    <h2>5. Decision Notes</h2>
+                    <div class="db-form-grid">
+                        <label class="db-field full">Builder vs. systems/business path answer<textarea data-key="builderVsSystems" placeholder="Do you want to build software most days, or analyze/manage/improve business technology systems?"></textarea></label>
+                        <label class="db-field full">What would make UNC Charlotte the clear choice?<textarea data-key="uncClearChoice" placeholder="Example: strong transfer fit, enough time to study coding, confidence with programming..."></textarea></label>
+                        <label class="db-field full">What would make ECU MIS the clear choice?<textarea data-key="ecuClearChoice" placeholder="Example: better credit transfer, less coding stress, stronger interest in business tech..."></textarea></label>
+                        <label class="db-field full">Top unresolved questions<textarea data-key="unresolvedQuestions" placeholder="List questions for admissions, academic advisors, financial aid, transfer credit, and current students."></textarea></label>
+                    </div>
+                    <div class="callout orange">
+                        <p><strong>Original V1 recommendation:</strong> Aim for UNC Charlotte AI-Assisted Software Engineering first, keep ECU MIS as the backup/alternate, and only consider the UNC Charlotte B.S. in AI if you decide you want a harder math-heavy AI path.</p>
+                    </div>
+                </section>
+
+                <!-- 6. Evidence -->
+                <section class="db-card" id="evidence">
+                    <h2>6. Evidence Behind the Scores</h2>
+                    <p class="section-note">Reasoning from the original Version 1 board. Use the source tracker below to re-check facts over time.</p>
+
+                    <details open><summary>Career upside</summary><div class="detail-body">
+                        <p>The UNC Charlotte CS path has the stronger technical labor-market match. BLS reports a May 2024 median annual wage of <strong>$133,080 for software developers</strong>, with software developer employment projected to grow <strong>16% from 2024 to 2034</strong>. Data science is also strong, with BLS reporting a May 2024 median wage of <strong>$112,590</strong> and projected growth of <strong>34% from 2024 to 2034</strong>.</p>
+                        <p>ECU MIS still has strong career relevance. BLS reports computer systems analysts had a May 2024 median wage of <strong>$103,790</strong> and projected growth of <strong>9% from 2024 to 2034</strong>. MIS can also lead toward IT management over time; BLS reports computer and information systems managers had a May 2024 median wage of <strong>$171,200</strong>, though that role typically requires experience beyond the bachelor's degree.</p>
+                    </div></details>
+
+                    <details open><summary>Transfer/admission practicality</summary><div class="detail-body">
+                        <p>UNC Charlotte's online B.A. CS program requires transfer students to have <strong>24+ transferable credit hours</strong>, a <strong>2.5+ cumulative GPA</strong>, a <strong>C or higher in previously attempted CS courses</strong>, and a <strong>C or better in college-level algebra equivalent to MATH 1100</strong>.</p>
+                        <p>ECU's MIS transfer guide says transfer applicants need <strong>24 transferable hours</strong> and a <strong>2.0 cumulative GPA</strong> to apply, but to declare MIS as the major, students need <strong>45 semester hours</strong>, a <strong>2.5 overall GPA</strong>, and completion of eight declaration courses with <strong>C- or higher</strong>. ECU also notes there is <strong>no transfer credit limit</strong>, though at least 25% of degree hours and at least 50% of major hours must be completed through ECU enrollment.</p>
+                    </div></details>
+
+                    <details open><summary>Online flexibility</summary><div class="detail-body">
+                        <p>UNC Charlotte describes the AI-Assisted Software Engineering B.A. as <strong>100% online and asynchronous</strong>, which is excellent for a working/adult student schedule.</p>
+                        <p>ECU says students can complete the BSBA online in several concentrations, including <strong>Management Information Systems</strong>, and that the online and face-to-face degree are the same.</p>
+                    </div></details>
+
+                    <details open><summary>Cost/value</summary><div class="detail-body">
+                        <p>UNC Charlotte lists the online B.A. CS tuition at <strong>$189.48 per credit hour for NC residents</strong> and <strong>$864.73 per credit hour for non-residents</strong>, with rates subject to change.</p>
+                        <p>ECU's Fall 2026 distance education resident undergraduate table lists a new Fall 2026 resident cohort at <strong>$213.42 for one credit hour</strong> and <strong>$2,555.54 for 12+ credit hours</strong>, with undergraduate billing capped at 12 credit hours and pricing subject to change.</p>
+                    </div></details>
+
+                    <details open><summary>Honest read</summary><div class="detail-body">
+                        <p>Right now, treat <strong>UNC Charlotte AI-Assisted Software Engineering</strong> as your highest-upside target. It gives you the clearest tech-builder identity: software, AI tools, databases, front end, back end, architecture, capstone, and portfolio potential.</p>
+                        <p>Treat <strong>ECU MIS</strong> as your safer tech-business alternate. It is not a weak option. It may actually be the better choice if you decide you want technology, systems, business analysis, project management, and management more than daily coding.</p>
+                        <p>The biggest unresolved question is not "which school is better?" It is: <strong>Do you want to become the person who builds software, or the person who manages, analyzes, and improves business technology systems?</strong></p>
+                    </div></details>
+                </section>
+
+                <!-- 7. Source Tracker -->
+                <section class="db-card" id="sourceTracker">
+                    <h2>7. Source Tracker</h2>
+                    <p class="section-note">Re-check these links before final decisions. Tuition, admissions, program delivery, and requirements can change.</p>
+                    <div class="table-scroll">
+                        <table class="editable-table">
+                            <thead><tr><th>Source</th><th>Facts to verify</th><th>Link</th><th>Last verified</th><th>Notes</th></tr></thead>
+                            <tbody>
+                                <tr><td>UNC Charlotte Online B.A. CS - AI-Assisted SWE</td><td>120 credits; fully online/async; transfer requirements; tuition; curriculum.</td><td><a href="https://academics.charlotte.edu/program/computer-science-ai-assisted-software-engineering-concentration-b-a-online/" target="_blank" rel="noopener">Official program page</a></td><td><input data-key="source_unc_ba_date" type="date" value="2026-05-29" /></td><td><textarea data-key="source_unc_ba_notes"></textarea></td></tr>
+                                <tr><td>ECU College of Business - BSBA majors</td><td>MIS concentration; online BSBA availability; degree equivalency.</td><td><a href="https://business.ecu.edu/majors/" target="_blank" rel="noopener">Majors page</a> / <a href="https://business.ecu.edu/online/" target="_blank" rel="noopener">Online page</a></td><td><input data-key="source_ecu_business_date" type="date" value="2026-05-29" /></td><td><textarea data-key="source_ecu_business_notes"></textarea></td></tr>
+                                <tr><td>UNC System / NC Transfer Guide - ECU MIS</td><td>Transfer application baseline; MIS declaration requirements; transfer credit limits.</td><td><a href="https://coursetransfer.northcarolina.edu/guide/2025-2026/578" target="_blank" rel="noopener">Transfer guide</a></td><td><input data-key="source_ecu_transfer_date" type="date" value="2026-05-29" /></td><td><textarea data-key="source_ecu_transfer_notes"></textarea></td></tr>
+                                <tr><td>UNC Charlotte B.S. Artificial Intelligence</td><td>Launch timing; curriculum; delivery format; math requirements.</td><td><a href="https://cci.charlotte.edu/ai-bachelors/" target="_blank" rel="noopener">AI bachelor's page</a></td><td><input data-key="source_unc_ai_date" type="date" value="2026-05-29" /></td><td><textarea data-key="source_unc_ai_notes"></textarea></td></tr>
+                                <tr><td>BLS - Software Developers</td><td>Median wage; job growth; role outlook.</td><td><a href="https://www.bls.gov/ooh/computer-and-information-technology/software-developers.htm" target="_blank" rel="noopener">BLS page</a></td><td><input data-key="source_bls_swe_date" type="date" value="2026-05-29" /></td><td><textarea data-key="source_bls_swe_notes"></textarea></td></tr>
+                                <tr><td>BLS - Data Scientists</td><td>Median wage; job growth; educational expectations.</td><td><a href="https://www.bls.gov/ooh/math/data-scientists.htm" target="_blank" rel="noopener">BLS page</a></td><td><input data-key="source_bls_ds_date" type="date" value="2026-05-29" /></td><td><textarea data-key="source_bls_ds_notes"></textarea></td></tr>
+                                <tr><td>BLS - Computer Systems Analysts</td><td>Median wage; job growth; MIS fit.</td><td><a href="https://www.bls.gov/ooh/computer-and-information-technology/computer-systems-analysts.htm" target="_blank" rel="noopener">BLS page</a></td><td><input data-key="source_bls_csa_date" type="date" value="2026-05-29" /></td><td><textarea data-key="source_bls_csa_notes"></textarea></td></tr>
+                                <tr><td>BLS - CIS Managers</td><td>Median wage; experience expectations; long-term MIS upside.</td><td><a href="https://www.bls.gov/ooh/management/computer-and-information-systems-managers.htm" target="_blank" rel="noopener">BLS page</a></td><td><input data-key="source_bls_cism_date" type="date" value="2026-05-29" /></td><td><textarea data-key="source_bls_cism_notes"></textarea></td></tr>
+                                <tr><td>ECU Financial Services - Fall 2026 DE Tuition</td><td>Per-credit and full-time tuition; billing cap; resident rates.</td><td><a href="https://financialservices.ecu.edu/distance-education-tuition-fees-for-fall-2026-undergrad-res/" target="_blank" rel="noopener">ECU tuition page</a></td><td><input data-key="source_ecu_tuition_date" type="date" value="2026-05-29" /></td><td><textarea data-key="source_ecu_tuition_notes"></textarea></td></tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- 8. Advisor Questions -->
+                <section class="db-card span-6" id="advisorQuestions">
+                    <h2>8. Advisor Questions</h2>
+                    <p class="section-note">Add or edit questions as you learn more.</p>
+                    <div class="table-scroll">
+                        <table class="editable-table" id="advisorTable">
+                            <thead><tr><th>Question</th><th>Program/school</th><th>Status</th><th>Answer / follow-up</th><th class="no-print">Action</th></tr></thead>
+                            <tbody id="advisorRows"></tbody>
+                        </table>
+                    </div>
+                    <button class="small-button no-print" type="button" id="addAdvisorRow">Add advisor question</button>
+                </section>
+
+                <!-- 9. Next Actions -->
+                <section class="db-card span-6" id="nextActions">
+                    <h2>9. Next Actions</h2>
+                    <p class="section-note">Keep this short and active. These steps turn the decision board into movement.</p>
+                    <div class="table-scroll">
+                        <table class="editable-table" id="actionTable">
+                            <thead><tr><th>Action</th><th>Due date</th><th>Status</th><th>Notes</th><th class="no-print">Action</th></tr></thead>
+                            <tbody id="actionRows"></tbody>
+                        </table>
+                    </div>
+                    <button class="small-button no-print" type="button" id="addActionRow">Add next action</button>
+                </section>
+
+                <!-- 10. PDF Export -->
+                <section class="db-card" id="pdfExport">
+                    <h2>10. PDF Export Instructions</h2>
+                    <div class="callout">
+                        <p><strong>To export a PDF:</strong> click <strong>Export to PDF</strong> at the top, then choose <strong>Save as PDF</strong> in your browser's print dialog. The toolbar and edit buttons are hidden in the PDF view.</p>
+                    </div>
+                    <p style="font-size:0.92rem;color:#475569;"><strong>Best workflow:</strong> use this HTML file as the living tracker. Export a PDF snapshot after milestones like an advisor meeting, transfer evaluation, class completion, or application decision.</p>
+                    <label class="db-field full" style="margin-top:12px;">
+                        Snapshot / changelog notes
+                        <textarea data-key="changelog" placeholder="Example: 2026-05-29 - Version 1 baseline created. Waiting on transfer credit evaluation."></textarea>
+                    </label>
+                </section>
+            </div>
+
+            <p class="db-footer-note">Planning note: this decision board is for personal planning. Confirm admissions requirements, tuition, transfer rules, delivery format, and deadlines directly with each school before making final decisions.</p>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <a href="index.html" class="nav-logo"><span class="logo-icon">&#9881;</span> Career Craft</a>
+                    <p>Helping you discover, plan, and build the career you deserve.</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-col">
+                        <h4>Tools</h4>
+                        <a href="explore.html">Career Explorer</a>
+                        <a href="advice.html">Career Advice</a>
+                        <a href="resume.html">Resume Builder</a>
+                        <a href="agent.html">AI Resume Agent</a>
+                        <a href="degree-path.html">Degree Board</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Career Craft. Built to help you shine.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/degree-path.js"></script>
+</body>
+</html>
