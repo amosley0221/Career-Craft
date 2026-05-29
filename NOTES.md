@@ -66,5 +66,20 @@ Career-Craft/
 - Branch: `claude/career-craft-website-XWTyC`
 - Can be deployed on Render as a Static Site with publish directory `.` and no build command
 
-## Planned Features (Not Yet Implemented)
-- **AI Resume Agent**: A live AI-powered chat agent that allows users to upload their resume, receive detailed feedback, ask follow-up questions, and get a corrected resume back in Word (.docx) format
+### 5. AI Resume Agent (`agent.html`)
+- Chat-based AI agent powered by Claude API (user provides their own API key)
+- File upload: supports PDF (via pdf.js), DOCX (via mammoth.js), and TXT
+- Extracts text from uploaded resumes and sends to Claude for detailed review
+- Interactive chat: users can ask follow-up questions and request changes
+- Agent provides feedback organized by: Overall Impression, Content & Impact, Structure, ATS Keywords, Specific Suggestions
+- When user asks for a fix, agent provides improved resume with download capability
+- Download fixed resume as Word (.doc) file
+- Typing indicator animation during AI responses
+- Drag-and-drop file upload with visual feedback
+- API key stored in sessionStorage only (never persisted)
+- Configurable API endpoint for CORS proxy support
+
+## External Dependencies (CDN)
+- Google Fonts: Inter, Space Grotesk
+- pdf.js 3.11.174 (PDF text extraction)
+- mammoth.js 1.8.0 (DOCX text extraction)

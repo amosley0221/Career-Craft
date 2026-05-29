@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Resume Agent - Career Craft</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/mammoth@1.8.0/mammoth.browser.min.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo">
+                <span class="logo-icon">&#9881;</span> Career Craft
+            </a>
+            <button class="nav-toggle" aria-label="Toggle navigation">
+                <span></span><span></span><span></span>
+            </button>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="explore.html" class="nav-link">Explore Careers</a></li>
+                <li><a href="advice.html" class="nav-link">Career Advice</a></li>
+                <li><a href="resume.html" class="nav-link">Build Resume</a></li>
+                <li><a href="agent.html" class="nav-link cta-button active">AI Agent</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="page-hero">
+        <div class="container">
+            <span class="section-tag">AI-Powered</span>
+            <h1>Resume Review <span class="gradient-text">Agent</span></h1>
+            <p>Upload your resume, get detailed AI feedback, ask follow-up questions, and download a polished final version in Word format.</p>
+        </div>
+    </section>
+
+    <section class="agent-section">
+        <div class="container">
+            <!-- Setup Screen -->
+            <div class="agent-setup" id="agentSetup">
+                <div class="setup-card">
+                    <div class="setup-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#667eea" stroke-width="1.5"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+                    </div>
+                    <h2>Get Started</h2>
+                    <p>Enter your Anthropic API key to power the AI agent. Your key is stored only in your browser session and is never saved.</p>
+                    <div class="setup-form">
+                        <div class="form-group">
+                            <label for="apiKey">Anthropic API Key</label>
+                            <div class="api-key-input">
+                                <input type="password" id="apiKey" placeholder="sk-ant-...">
+                                <button class="btn btn-sm btn-outline" id="toggleKeyBtn" type="button">Show</button>
+                            </div>
+                            <small class="form-hint">Get your key at <strong>console.anthropic.com</strong></small>
+                        </div>
+                        <div class="form-group">
+                            <label for="proxyUrl">API Endpoint (optional)</label>
+                            <input type="text" id="proxyUrl" placeholder="https://your-proxy.example.com/api/messages" value="">
+                            <small class="form-hint">Leave blank to use the default Anthropic API. For production, use a CORS proxy.</small>
+                        </div>
+                        <button class="btn btn-primary btn-lg" id="startAgentBtn" disabled>
+                            <span>Start Agent</span>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Chat Interface -->
+            <div class="agent-chat hidden" id="agentChat">
+                <div class="chat-container">
+                    <!-- Chat Messages -->
+                    <div class="chat-messages" id="chatMessages">
+                        <div class="chat-message agent-message">
+                            <div class="message-avatar agent-avatar">AI</div>
+                            <div class="message-content">
+                                <p>Welcome! I'm your AI Resume Review Agent. Upload your resume (PDF, DOCX, or TXT) and I'll provide detailed, actionable feedback to help you land more interviews.</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Upload Area (shown initially) -->
+                    <div class="upload-area" id="uploadArea">
+                        <div class="upload-dropzone" id="dropzone">
+                            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#667eea" stroke-width="1.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                            <p>Drag & drop your resume here</p>
+                            <span>or</span>
+                            <label class="btn btn-outline btn-sm upload-btn">
+                                Browse Files
+                                <input type="file" id="fileInput" accept=".pdf,.docx,.doc,.txt" hidden>
+                            </label>
+                            <small>Supports PDF, DOCX, and TXT files</small>
+                        </div>
+                        <div class="file-info hidden" id="fileInfo">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#667eea" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14,2 14,8 20,8"/></svg>
+                            <span id="fileName"></span>
+                            <button class="remove-file" id="removeFile">&times;</button>
+                        </div>
+                    </div>
+
+                    <!-- Chat Input -->
+                    <div class="chat-input-area">
+                        <div class="chat-input-wrapper">
+                            <textarea id="chatInput" placeholder="Type your message..." rows="1" disabled></textarea>
+                            <button class="send-btn" id="sendBtn" disabled>
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                            </button>
+                        </div>
+                        <div class="chat-actions">
+                            <button class="btn btn-outline btn-sm" id="newUploadBtn">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                                Upload New Resume
+                            </button>
+                            <button class="btn btn-primary btn-sm hidden" id="downloadDocxBtn">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                                Download Fixed Resume (.docx)
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <a href="index.html" class="nav-logo">
+                        <span class="logo-icon">&#9881;</span> Career Craft
+                    </a>
+                    <p>Helping you discover, plan, and build the career you deserve.</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-col">
+                        <h4>Tools</h4>
+                        <a href="explore.html">Career Explorer</a>
+                        <a href="advice.html">Career Advice</a>
+                        <a href="resume.html">Resume Builder</a>
+                        <a href="agent.html">AI Resume Agent</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Career Craft. Built to help you shine.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/agent.js"></script>
+</body>
+</html>
