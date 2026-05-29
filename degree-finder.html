@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Degree Finder - Career Craft</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+      .df { padding: 40px 0 100px; }
+
+      /* Toolbar */
+      .df-toolbar {
+        display: flex; gap: 10px; flex-wrap: wrap; align-items: center;
+        padding: 16px 24px; background: #fff; border-radius: 16px;
+        border: 1px solid #f1f5f9; box-shadow: 0 2px 12px rgba(0,0,0,0.03); margin-bottom: 24px;
+      }
+      .df-toolbar .df-nav { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+      .df-toolbar .df-nav a {
+        padding: 7px 14px; border-radius: 50px; border: 2px solid #e2e8f0;
+        font-weight: 600; font-size: 0.82rem; color: #64748b; transition: all 0.2s; text-decoration: none;
+      }
+      .df-toolbar .df-nav a:hover { border-color: #667eea; color: #667eea; }
+      .df-toolbar .df-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-left: auto; align-items: center; }
+      .df-btn {
+        display: inline-flex; align-items: center; gap: 6px;
+        padding: 8px 16px; border-radius: 50px; border: 2px solid #e2e8f0;
+        background: #fff; color: #475569; font-weight: 600; font-size: 0.82rem;
+        cursor: pointer; transition: all 0.2s;
+      }
+      .df-btn:hover { border-color: #667eea; color: #667eea; }
+      .df-btn.df-primary { background: linear-gradient(135deg,#667eea,#764ba2); color: #fff; border-color: transparent; }
+      .df-btn.df-primary:hover { box-shadow: 0 4px 15px rgba(102,126,234,0.4); }
+      .df-btn.df-secondary { background: #fff; color: #475569; }
+      .df-btn.df-ghost { background: transparent; color: #667eea; border-color: rgba(102,126,234,0.3); }
+      .df-btn.df-ghost:hover { border-color: #667eea; }
+      .df-btn.df-danger { color: #ef4444; }
+      .df-btn.df-danger:hover { border-color: #ef4444; }
+      .df-btn.df-small { padding: 6px 12px; font-size: 0.78rem; }
+      .df-file-input { display: none; }
+
+      /* Hero grid */
+      .df-hero-grid { display: grid; grid-template-columns: 1.6fr 0.9fr; gap: 20px; margin-bottom: 24px; }
+      .df-hero-card {
+        background: linear-gradient(135deg, #fff 0%, #eef2ff 100%);
+        border: 1px solid #f1f5f9; border-radius: 20px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.04); padding: 32px;
+        position: relative; overflow: hidden;
+      }
+      .df-hero-card::after {
+        content: ""; position: absolute; width: 230px; height: 230px;
+        border-radius: 50%; right: -80px; top: -80px;
+        background: linear-gradient(135deg, rgba(102,126,234,0.18), rgba(118,75,162,0.15));
+        pointer-events: none;
+      }
+      .df-side-panel {
+        background: #fff; border: 1px solid #f1f5f9; border-radius: 20px;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.03); padding: 22px;
+      }
+      .df-eyebrow {
+        display: inline-flex; padding: 6px 14px; border-radius: 50px;
+        background: rgba(102,126,234,0.1); border: 1px solid rgba(102,126,234,0.2);
+        color: #667eea; font-size: 0.78rem; font-weight: 700;
+        text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 14px;
+      }
+      .df-hero-card h2 {
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: clamp(1.8rem, 3.5vw, 2.8rem); font-weight: 800;
+        line-height: 1.1; margin: 0 0 14px; letter-spacing: -0.03em; color: #0f172a;
+      }
+      .df-lead { color: #475569; font-size: 1.05rem; margin: 16px 0 0; line-height: 1.6; max-width: 850px; }
+      .df-tag-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 20px; }
+      .df-tag {
+        display: inline-flex; align-items: center; gap: 6px;
+        border: 1px solid #e2e8f0; background: #fff; color: #475569;
+        padding: 7px 12px; border-radius: 50px; font-size: 0.82rem; font-weight: 600;
+      }
+
+      /* Cards / Panels */
+      .df-card {
+        background: #fff; border: 1px solid #f1f5f9; border-radius: 20px;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.03); padding: 28px; margin-bottom: 20px;
+      }
+      .df-card h2 {
+        font-family: 'Space Grotesk', sans-serif; font-size: 1.5rem;
+        font-weight: 800; margin: 0 0 8px; color: #1e293b; letter-spacing: -0.02em;
+      }
+      .df-card h3 {
+        font-family: 'Space Grotesk', sans-serif; font-size: 1.1rem;
+        font-weight: 700; margin: 0 0 8px; color: #334155;
+      }
+      .df-muted { color: #94a3b8; }
+
+      .df-mini-card {
+        background: #f8faff; border: 1px solid #f1f5f9; border-radius: 14px; padding: 16px;
+      }
+      .df-stat {
+        font-family: 'Space Grotesk', sans-serif; font-size: 1.8rem;
+        font-weight: 900; letter-spacing: -0.03em; color: #1e293b;
+      }
+      .df-stat-label {
+        color: #94a3b8; font-size: 0.78rem; font-weight: 700;
+        text-transform: uppercase; letter-spacing: 0.07em;
+      }
+
+      /* Callouts */
+      .df-callout {
+        border-left: 5px solid #667eea; background: rgba(102,126,234,0.06);
+        padding: 16px 18px; border-radius: 14px; margin: 12px 0;
+      }
+      .df-callout.good { border-left-color: #0f766e; background: #ecfdf5; }
+      .df-callout.warn { border-left-color: #b45309; background: #fff7ed; }
+      .df-callout.bad { border-left-color: #b91c1c; background: #fef2f2; }
+
+      /* Form fields */
+      .df-field-row { display: grid; grid-template-columns: repeat(4,1fr); gap: 12px; }
+      .df-field-row + .df-field-row { margin-top: 12px; }
+      .df-card label {
+        display: block; font-size: 0.76rem; font-weight: 700; color: #94a3b8;
+        text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px;
+      }
+      .df-card input[type="text"], .df-card input[type="number"],
+      .df-card input[type="date"], .df-card select, .df-card textarea {
+        width: 100%; border: 2px solid #e2e8f0; border-radius: 12px;
+        padding: 10px 14px; font: inherit; color: #1e293b;
+        background: #f8faff; transition: border-color 0.2s;
+      }
+      .df-card input:focus, .df-card select:focus, .df-card textarea:focus {
+        outline: none; border-color: #667eea; background: #fff;
+      }
+      .df-card textarea { min-height: 88px; resize: vertical; }
+      .df-card input[type="checkbox"] { width: 18px; height: 18px; }
+      .df-checkbox-line { display: flex; align-items: center; gap: 10px; font-weight: 700; }
+
+      /* Grids */
+      .df-grid-2 { display: grid; grid-template-columns: repeat(2,1fr); gap: 16px; }
+      .df-grid-3 { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
+      .df-grid-4 { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; }
+
+      /* Table */
+      .df-table-wrap {
+        overflow-x: auto; border: 1px solid #f1f5f9;
+        border-radius: 16px; background: #fff;
+      }
+      .df-table-wrap table { width: 100%; border-collapse: collapse; min-width: 980px; }
+      .df-table-wrap th, .df-table-wrap td {
+        padding: 10px; border-bottom: 1px solid #f1f5f9;
+        text-align: left; vertical-align: top;
+      }
+      .df-table-wrap th {
+        font-size: 0.74rem; text-transform: uppercase; letter-spacing: 0.06em;
+        color: #64748b; background: #f8faff; position: sticky; top: 0; z-index: 1; font-weight: 700;
+      }
+      .df-table-wrap td input, .df-table-wrap td select, .df-table-wrap td textarea {
+        padding: 8px; border-radius: 10px; font-size: 0.86rem;
+      }
+      .df-table-wrap td textarea { min-height: 48px; min-width: 260px; }
+      .df-score-input { width: 72px; }
+      .df-weight-input { width: 92px; }
+
+      /* Pills & Bars */
+      .df-pill {
+        display: inline-flex; align-items: center; gap: 5px;
+        padding: 5px 10px; border-radius: 50px; font-size: 0.78rem; font-weight: 800;
+        border: 1px solid #e2e8f0; background: #fff; color: #475569;
+      }
+      .df-pill.good { background: #ecfdf5; border-color: #a7f3d0; color: #0f766e; }
+      .df-pill.warn { background: #fff7ed; border-color: #fed7aa; color: #b45309; }
+      .df-pill.bad { background: #fef2f2; border-color: #fecaca; color: #b91c1c; }
+      .df-bar {
+        height: 12px; border-radius: 50px; background: #f1f5f9;
+        overflow: hidden; border: 1px solid #e2e8f0;
+      }
+      .df-bar > span {
+        display: block; height: 100%; width: 0;
+        background: linear-gradient(90deg, #667eea, #764ba2);
+        transition: width 0.25s ease;
+      }
+
+      /* Rankings */
+      .df-ranking-card {
+        display: grid; grid-template-columns: 0.65fr 2fr 0.9fr;
+        gap: 14px; align-items: center;
+        border: 1px solid #f1f5f9; border-radius: 16px;
+        padding: 16px; background: #f8faff; margin-bottom: 12px;
+      }
+      .df-rank-badge {
+        width: 54px; height: 54px; border-radius: 16px; display: grid;
+        place-items: center; background: rgba(102,126,234,0.1);
+        font-family: 'Space Grotesk', sans-serif;
+        font-size: 1.4rem; font-weight: 900; color: #667eea;
+      }
+      .df-progress-list { display: grid; gap: 10px; }
+      .df-progress-line {
+        display: grid; grid-template-columns: 200px 1fr 64px;
+        gap: 12px; align-items: center;
+      }
+
+      /* Kanban */
+      .df-kanban { display: grid; grid-template-columns: repeat(4,1fr); gap: 14px; }
+      .df-kanban-col {
+        background: #f8faff; border: 1px solid #f1f5f9;
+        border-radius: 16px; padding: 12px;
+      }
+      .df-task {
+        background: #fff; border: 1px solid #f1f5f9;
+        border-radius: 14px; padding: 12px; margin: 10px 0;
+      }
+      .df-task textarea { min-height: 52px; }
+
+      /* Code box */
+      .df-code-box {
+        background: #0f172a; color: #e2e8f0; border-radius: 16px;
+        padding: 18px; font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+        overflow-x: auto; white-space: pre-wrap; font-size: 0.84rem;
+        border: 1px solid #1e293b;
+      }
+
+      /* Notice toast */
+      .df-notice {
+        position: fixed; bottom: 20px; right: 20px;
+        background: #0f172a; color: #fff; padding: 12px 16px;
+        border-radius: 14px; box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+        z-index: 30; opacity: 0; transform: translateY(10px);
+        transition: opacity 0.2s ease, transform 0.2s ease;
+        font-weight: 600; font-size: 0.88rem;
+      }
+      .df-notice.show { opacity: 1; transform: translateY(0); }
+
+      .df-footer-note { color: #94a3b8; text-align: center; margin: 24px 0 0; font-size: 0.85rem; }
+
+      @media (max-width: 968px) {
+        .df-hero-grid, .df-grid-2, .df-grid-3, .df-grid-4, .df-field-row, .df-kanban { grid-template-columns: 1fr; }
+        .df-ranking-card { grid-template-columns: 1fr; }
+        .df-progress-line { grid-template-columns: 1fr; }
+      }
+      @media print {
+        body * { visibility: hidden; }
+        .df, .df * { visibility: visible; }
+        .df { position: absolute; left: 0; top: 0; width: 100%; padding: 0.5in; }
+        .navbar, .footer, .df-toolbar, .no-print, .df-btn, .df-notice { display: none !important; }
+        .df-card, .df-hero-card, .df-side-panel, .df-mini-card, .df-ranking-card, .df-table-wrap {
+          box-shadow: none !important; break-inside: avoid;
+        }
+        .df-hero-card { background: #fff; }
+        .df-hero-card::after { display: none; }
+        .df-hero-grid { grid-template-columns: 1fr; }
+      }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="nav-logo"><span class="logo-icon">&#9881;</span> Career Craft</a>
+            <button class="nav-toggle" aria-label="Toggle navigation"><span></span><span></span><span></span></button>
+            <ul class="nav-menu">
+                <li><a href="index.html" class="nav-link">Home</a></li>
+                <li><a href="explore.html" class="nav-link">Explore Careers</a></li>
+                <li><a href="advice.html" class="nav-link">Career Advice</a></li>
+                <li><a href="resume.html" class="nav-link">Build Resume</a></li>
+                <li><a href="agent.html" class="nav-link">AI Agent</a></li>
+                <li><a href="degree-path.html" class="nav-link">Degree Board</a></li>
+                <li><a href="degree-finder.html" class="nav-link active">Degree Finder</a></li>
+                <li><a href="launch-plan.html" class="nav-link cta-button">90-Day Plan</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <section class="page-hero">
+        <div class="container">
+            <span class="section-tag">Portfolio Project</span>
+            <h1>AI Degree <span class="gradient-text">Finder</span></h1>
+            <p>Compare online AI, computer science, and MIS degree paths using editable program data, personal transfer-readiness inputs, weighted scoring, and a transparent recommendation engine.</p>
+        </div>
+    </section>
+
+    <section class="df">
+        <div class="container">
+            <!-- Toolbar -->
+            <div class="df-toolbar no-print">
+                <div class="df-nav">
+                    <a href="#app">Live App</a>
+                    <a href="#recommendation">Recommendation</a>
+                    <a href="#programs">Program Data</a>
+                    <a href="#portfolio">Portfolio Story</a>
+                    <a href="#build-plan">Build Plan</a>
+                    <a href="#readme">README</a>
+                    <a href="#sources">Sources</a>
+                </div>
+                <div class="df-actions">
+                    <button class="df-btn df-primary" onclick="window.print()" type="button">Export to PDF</button>
+                    <button class="df-btn df-secondary" onclick="exportState()" type="button">Export JSON</button>
+                    <label class="df-btn" for="dfImportFile">Import JSON</label>
+                    <input id="dfImportFile" type="file" accept="application/json" class="df-file-input" onchange="importState(event)" />
+                    <button class="df-btn df-ghost" onclick="saveState(true)" type="button">Save Now</button>
+                    <button class="df-btn df-danger" onclick="resetState()" type="button">Reset</button>
+                </div>
+            </div>
+
+            <!-- Hero Grid -->
+            <div class="df-hero-grid">
+                <div class="df-hero-card">
+                    <div class="df-eyebrow">AI / Software Portfolio Project</div>
+                    <h2>AI Degree Finder</h2>
+                    <p class="df-lead">A self-contained HTML app that compares online AI, computer science, and MIS degree paths using editable program data, personal transfer-readiness inputs, weighted scoring, and a transparent recommendation engine.</p>
+                    <div class="df-tag-row">
+                        <span class="df-tag">HTML</span>
+                        <span class="df-tag">CSS</span>
+                        <span class="df-tag">JavaScript</span>
+                        <span class="df-tag">localStorage</span>
+                        <span class="df-tag">JSON Import/Export</span>
+                        <span class="df-tag">Print-to-PDF</span>
+                        <span class="df-tag">Decision Support</span>
+                    </div>
+                </div>
+                <aside class="df-side-panel">
+                    <h3>Project purpose</h3>
+                    <p>This project turns your degree decision into a portfolio piece. It shows that you can identify a real-world problem, model data, build an interactive tool, and explain recommendations clearly.</p>
+                    <div class="df-callout good">
+                        <strong>Portfolio angle:</strong> "I built a decision-support web app to compare academic pathways using weighted criteria, eligibility checks, and personalized recommendations."
+                    </div>
+                </aside>
+            </div>
+
+            <!-- Step 1: Personal Transfer Reality -->
+            <div class="df-card" id="app">
+                <div class="df-grid-2">
+                    <div>
+                        <div class="df-eyebrow">Step 1</div>
+                        <h2>Your Personal Transfer Reality</h2>
+                        <p class="df-muted">Update these fields over time. The app saves locally in your browser and recalculates the recommendation.</p>
+                    </div>
+                    <div class="df-callout warn">
+                        <strong>Note:</strong> This is a planning and portfolio tool, not an official admissions decision. Verify final requirements with each school and advisor.
+                    </div>
+                </div>
+                <div class="df-field-row">
+                    <div><label for="credits">Transferable credits completed / in progress</label><input id="credits" type="number" min="0" max="150" step="1" /></div>
+                    <div><label for="gpa">Current cumulative GPA</label><input id="gpa" type="number" min="0" max="4" step="0.01" /></div>
+                    <div><label for="mathStatus">College algebra / math status</label><select id="mathStatus"><option value="completed">Completed with C or better</option><option value="inprogress">Currently in progress</option><option value="planned">Planned but not started</option><option value="notready">Not ready / unsure</option></select></div>
+                    <div><label for="csStatus">Prior CS course status</label><select id="csStatus"><option value="none">No prior CS course attempted</option><option value="cplus">Attempted, C or better</option><option value="belowc">Attempted, below C</option><option value="unknown">Unsure</option></select></div>
+                </div>
+                <div class="df-field-row">
+                    <div><label for="codingComfort">Coding comfort: 1 low – 5 high</label><input id="codingComfort" type="number" min="1" max="5" step="1" /></div>
+                    <div><label for="weeklyHours">Weekly hours available</label><input id="weeklyHours" type="number" min="0" max="80" step="1" /></div>
+                    <div><label for="desiredTrack">Preferred direction</label><select id="desiredTrack"><option value="balanced">Balanced tech + completion</option><option value="builder">Software builder / developer</option><option value="business">Business technology / systems</option><option value="ai">AI / machine learning</option><option value="management">Future tech management</option></select></div>
+                    <div><label for="startTerm">Target start term</label><input id="startTerm" type="text" placeholder="Fall 2026" /></div>
+                </div>
+                <div class="df-field-row">
+                    <div><label for="declarationCourses">ECU declaration courses completed: 0–8</label><input id="declarationCourses" type="number" min="0" max="8" step="1" /></div>
+                    <div><label for="budgetSensitivity">Budget sensitivity: 1 low – 5 high</label><input id="budgetSensitivity" type="number" min="1" max="5" step="1" /></div>
+                    <div><label for="onlineNeed">Online flexibility need: 1 low – 5 high</label><input id="onlineNeed" type="number" min="1" max="5" step="1" /></div>
+                    <div><label for="riskTolerance">Risk tolerance: 1 low – 5 high</label><input id="riskTolerance" type="number" min="1" max="5" step="1" /></div>
+                </div>
+                <div style="margin-top: 12px;">
+                    <label for="personalNotes">Personal notes / transcript questions</label>
+                    <textarea id="personalNotes" placeholder="Example: Need to confirm whether MAT 171 satisfies UNC Charlotte algebra requirement; ask ECU about MIS 2223 equivalent; verify credits after transcript evaluation."></textarea>
+                </div>
+            </div>
+
+            <!-- Step 2: Recommendation Engine -->
+            <div class="df-card" id="recommendation">
+                <div class="df-grid-2">
+                    <div>
+                        <div class="df-eyebrow">Step 2</div>
+                        <h2>Transparent Recommendation Engine</h2>
+                        <p class="df-muted">The app combines weighted program strength, your current readiness, and your stated direction. It does not hide the logic.</p>
+                    </div>
+                    <div id="recommendationBox" class="df-callout good"></div>
+                </div>
+                <div id="rankingCards"></div>
+            </div>
+
+            <!-- Stat Cards -->
+            <div class="df-grid-3" style="margin-bottom: 20px;">
+                <div class="df-mini-card">
+                    <div class="df-stat-label">Top Match</div>
+                    <div id="topMatch" class="df-stat">—</div>
+                </div>
+                <div class="df-mini-card">
+                    <div class="df-stat-label">Highest Readiness</div>
+                    <div id="highestReadiness" class="df-stat">—</div>
+                </div>
+                <div class="df-mini-card">
+                    <div class="df-stat-label">Portfolio Best Fit</div>
+                    <div id="portfolioBest" class="df-stat">—</div>
+                </div>
+            </div>
+
+            <!-- Step 3: Readiness Snapshot -->
+            <div class="df-card">
+                <div class="df-eyebrow">Step 3</div>
+                <h2>Readiness Snapshot</h2>
+                <p class="df-muted">This converts admissions/major-readiness requirements into a personal checklist.</p>
+                <div id="readinessSnapshot" class="df-grid-3"></div>
+            </div>
+
+            <!-- Step 4: Editable Program Data -->
+            <div class="df-card" id="programs">
+                <div class="df-grid-2">
+                    <div>
+                        <div class="df-eyebrow">Step 4</div>
+                        <h2>Editable Program Data</h2>
+                        <p class="df-muted">Adjust the seed scores as you learn more. Scores are 1–5. Higher is better except "difficulty," which is shown as a risk factor.</p>
+                    </div>
+                    <div class="no-print" style="display:flex; gap:8px; justify-content:flex-end; align-items:start;">
+                        <button class="df-btn df-secondary" onclick="addProgram()" type="button">Add Program</button>
+                        <button class="df-btn df-ghost" onclick="normalizeWeights()" type="button">Normalize Weights</button>
+                    </div>
+                </div>
+                <h3>Weight Settings</h3>
+                <p class="df-muted">These default weights match the original degree-path decision board logic: career upside, technical builder skill, online fit, transfer practicality, completion odds, cost/value, and portfolio value.</p>
+                <div id="weightsGrid" class="df-grid-4"></div>
+                <h3 style="margin-top: 20px;">Program Table</h3>
+                <div class="df-table-wrap">
+                    <table aria-label="Editable program data table">
+                        <thead>
+                            <tr>
+                                <th>Use</th><th>Program</th><th>Track</th><th>Delivery</th>
+                                <th>Career</th><th>Builder</th><th>Online</th><th>Transfer</th>
+                                <th>Completion</th><th>Cost</th><th>Portfolio</th><th>AI Fit</th>
+                                <th>Business Fit</th><th>Difficulty</th><th>Notes</th><th class="no-print">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="programTableBody"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Step 5: Advisor Questions -->
+            <div class="df-card">
+                <div class="df-eyebrow">Step 5</div>
+                <h2>Advisor Question Generator</h2>
+                <p class="df-muted">These update based on your top recommendation and readiness gaps.</p>
+                <div id="advisorQuestions" class="df-grid-2"></div>
+            </div>
+
+            <!-- Portfolio Story -->
+            <div class="df-card" id="portfolio">
+                <div class="df-eyebrow">Portfolio Story</div>
+                <h2>How this becomes a strong portfolio project</h2>
+                <div class="df-grid-2">
+                    <div>
+                        <h3>Problem</h3>
+                        <p>Choosing a degree path is difficult because requirements, career outcomes, personal readiness, and life constraints are scattered across different sources.</p>
+                        <h3>Solution</h3>
+                        <p>AI Degree Finder puts those inputs into one decision-support interface with editable data, weighted scoring, readiness checks, and explainable recommendations.</p>
+                        <h3>Why it matters</h3>
+                        <p>The app demonstrates practical software thinking: data modeling, user inputs, state persistence, scoring algorithms, UI design, and source-based decision support.</p>
+                    </div>
+                    <div class="df-callout good">
+                        <h3>Resume bullets you can eventually use</h3>
+                        <ul>
+                            <li>Built a browser-based decision-support tool using HTML, CSS, and JavaScript to compare academic pathways using weighted scoring and readiness checks.</li>
+                            <li>Implemented localStorage persistence, JSON backup/import, dynamic form rendering, and print-to-PDF export for a self-contained client-side app.</li>
+                            <li>Designed an explainable recommendation engine that combines user goals, transfer requirements, and career-fit criteria into ranked results.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Build Plan / Sprint Board -->
+            <div class="df-card" id="build-plan">
+                <div class="df-eyebrow">Build Roadmap</div>
+                <h2>Portfolio Project Sprint Board</h2>
+                <p class="df-muted">Use this as the next phase after the HTML MVP. Update statuses as you improve the project.</p>
+                <div class="df-kanban">
+                    <div class="df-kanban-col">
+                        <h3>Backlog</h3>
+                        <div class="df-task"><strong>Add charts</strong><p class="df-muted">Visualize category strengths by program.</p></div>
+                        <div class="df-task"><strong>Add source freshness dates</strong><p class="df-muted">Track when each school page was last verified.</p></div>
+                        <div class="df-task"><strong>Add program comparison export</strong><p class="df-muted">Create a shareable summary section for advisors.</p></div>
+                    </div>
+                    <div class="df-kanban-col">
+                        <h3>Next</h3>
+                        <div class="df-task"><strong>Move data into separate JSON</strong><p class="df-muted">Make the app easier to maintain.</p></div>
+                        <div class="df-task"><strong>Polish mobile layout</strong><p class="df-muted">Make table editing smoother on phones.</p></div>
+                    </div>
+                    <div class="df-kanban-col">
+                        <h3>In Progress</h3>
+                        <div class="df-task"><strong>Build MVP HTML</strong><p class="df-muted">Single-file version with local save and PDF export.</p></div>
+                    </div>
+                    <div class="df-kanban-col">
+                        <h3>Done</h3>
+                        <div class="df-task"><strong>Define project concept</strong><p class="df-muted">AI Degree Finder selected as first portfolio build.</p></div>
+                        <div class="df-task"><strong>Seed with real comparison data</strong><p class="df-muted">UNC Charlotte, ECU MIS, and AI watchlist option included.</p></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- README Draft -->
+            <div class="df-card" id="readme">
+                <div class="df-eyebrow">GitHub-Ready</div>
+                <h2>README Draft</h2>
+                <p class="df-muted">Copy this into a GitHub README when you turn this into a public portfolio repository.</p>
+                <div class="df-code-box" id="readmeText"></div>
+            </div>
+
+            <!-- Technical Architecture -->
+            <div class="df-card">
+                <div class="df-eyebrow">Technical Architecture</div>
+                <h2>What this project demonstrates</h2>
+                <div class="df-grid-3">
+                    <div class="df-mini-card"><h3>Data model</h3><p>Program objects, user profile inputs, weights, eligibility requirements, and career role metadata.</p></div>
+                    <div class="df-mini-card"><h3>Scoring engine</h3><p>Weighted program score + readiness score + preference fit + risk flags.</p></div>
+                    <div class="df-mini-card"><h3>State management</h3><p>Automatic local saving and JSON export/import so decisions can evolve over time.</p></div>
+                    <div class="df-mini-card"><h3>UI rendering</h3><p>Dynamic program table, ranking cards, readiness panels, advisor questions, and summary stats.</p></div>
+                    <div class="df-mini-card"><h3>Export workflow</h3><p>Print-friendly CSS enables browser save-to-PDF for snapshots.</p></div>
+                    <div class="df-mini-card"><h3>Next AI layer</h3><p>Future version can add natural-language explanations, transcript parsing, or a chatbot-style advisor.</p></div>
+                </div>
+            </div>
+
+            <!-- Source Tracker -->
+            <div class="df-card" id="sources">
+                <div class="df-eyebrow">Source Tracker</div>
+                <h2>Seed Data Sources</h2>
+                <p class="df-muted">Verified May 29, 2026. Tuition, deadlines, admissions rules, and program details can change, so keep this section updated.</p>
+                <div class="df-table-wrap">
+                    <table aria-label="Source tracker">
+                        <thead><tr><th>Source</th><th>Used for</th><th>URL</th></tr></thead>
+                        <tbody>
+                            <tr>
+                                <td>UNC Charlotte Online B.A. Computer Science: AI-Assisted Software Engineering</td>
+                                <td>Program purpose, 120 credits, online delivery, course examples, transfer requirements, deadlines, tuition seed values.</td>
+                                <td><a href="https://academics.charlotte.edu/program/computer-science-ai-assisted-software-engineering-concentration-b-a-online/" target="_blank" rel="noopener">academics.charlotte.edu program page</a></td>
+                            </tr>
+                            <tr>
+                                <td>ECU College of Business Online</td>
+                                <td>Online BSBA concentrations and note that online and face-to-face degree program are the same.</td>
+                                <td><a href="https://business.ecu.edu/online/" target="_blank" rel="noopener">business.ecu.edu online page</a></td>
+                            </tr>
+                            <tr>
+                                <td>ECU Management Information Systems BSBA</td>
+                                <td>MIS program description: business + computing, systems analysis/design, software project management, business solutions.</td>
+                                <td><a href="https://business.ecu.edu/majors/" target="_blank" rel="noopener">business.ecu.edu majors page</a></td>
+                            </tr>
+                            <tr>
+                                <td>NC Course Transfer Guide: ECU MIS</td>
+                                <td>Transfer application and MIS declaration requirements.</td>
+                                <td><a href="https://coursetransfer.northcarolina.edu/guide/2025-2026/578" target="_blank" rel="noopener">coursetransfer.northcarolina.edu guide</a></td>
+                            </tr>
+                            <tr>
+                                <td>UNC Charlotte B.S. Artificial Intelligence</td>
+                                <td>Watchlist program details, Fall 2026 launch, transfer requirements, AI/math course profile.</td>
+                                <td><a href="https://cci.charlotte.edu/ai-bachelors/" target="_blank" rel="noopener">cci.charlotte.edu AI bachelor's page</a></td>
+                            </tr>
+                            <tr>
+                                <td>U.S. Bureau of Labor Statistics — Software Developers</td>
+                                <td>Software developer median wage and job-growth seed data.</td>
+                                <td><a href="https://www.bls.gov/ooh/computer-and-information-technology/software-developers.htm" target="_blank" rel="noopener">bls.gov software developers</a></td>
+                            </tr>
+                            <tr>
+                                <td>U.S. Bureau of Labor Statistics — Computer Systems Analysts</td>
+                                <td>Systems analyst median wage and job-growth seed data.</td>
+                                <td><a href="https://www.bls.gov/ooh/computer-and-information-technology/computer-systems-analysts.htm" target="_blank" rel="noopener">bls.gov systems analysts</a></td>
+                            </tr>
+                            <tr>
+                                <td>U.S. Bureau of Labor Statistics — Computer and Information Systems Managers</td>
+                                <td>IT management pathway wage, experience expectation, and growth seed data.</td>
+                                <td><a href="https://www.bls.gov/ooh/management/computer-and-information-systems-managers.htm" target="_blank" rel="noopener">bls.gov information systems managers</a></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="df-footer-note">
+                <p>AI Degree Finder Portfolio Project — local data is stored only in your browser unless you export it.</p>
+            </div>
+        </div>
+    </section>
+
+    <div id="dfNotice" class="df-notice" role="status" aria-live="polite"></div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand"><a href="index.html" class="nav-logo"><span class="logo-icon">&#9881;</span> Career Craft</a><p>Helping you discover, plan, and build the career you deserve.</p></div>
+                <div class="footer-links"><div class="footer-col"><h4>Tools</h4><a href="explore.html">Career Explorer</a><a href="advice.html">Career Advice</a><a href="resume.html">Resume Builder</a><a href="agent.html">AI Resume Agent</a><a href="degree-path.html">Degree Board</a><a href="degree-finder.html">Degree Finder</a><a href="launch-plan.html">90-Day Plan</a></div></div>
+            </div>
+            <div class="footer-bottom"><p>&copy; 2026 Career Craft. Built to help you shine.</p></div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script src="js/degree-finder.js"></script>
+</body>
+</html>
