@@ -172,8 +172,9 @@
       #advisorTable, #actionTable { table-layout: fixed; }
       #advisorTable td, #actionTable td { padding: 8px 6px; }
       #advisorTable textarea, #actionTable textarea { min-height: 44px; font-size: 0.84rem; }
-      #advisorTable th:last-child, #actionTable th:last-child { width: 60px; }
       #advisorTable select, #actionTable select { font-size: 0.82rem; padding: 6px 4px; }
+      #advisorTable .col-remove, #actionTable .col-remove { width: 70px; }
+      #advisorTable .small-button, #actionTable .small-button { padding: 5px 10px; font-size: 0.78rem; white-space: nowrap; }
 
       .small-button {
         padding: 6px 14px; font-size: 0.82rem; border-radius: 50px;
@@ -542,6 +543,7 @@
                     <p class="section-note">Add or edit questions as you learn more.</p>
                     <div class="table-scroll">
                         <table class="editable-table" id="advisorTable">
+                            <colgroup><col style="width:28%"><col style="width:18%"><col style="width:13%"><col style="width:31%"><col class="col-remove no-print" style="width:10%"></colgroup>
                             <thead><tr><th>Question</th><th>Program/school</th><th>Status</th><th>Answer / follow-up</th><th class="no-print">Action</th></tr></thead>
                             <tbody id="advisorRows"></tbody>
                         </table>
@@ -555,6 +557,7 @@
                     <p class="section-note">Keep this short and active. These steps turn the decision board into movement.</p>
                     <div class="table-scroll">
                         <table class="editable-table" id="actionTable">
+                            <colgroup><col style="width:30%"><col style="width:16%"><col style="width:14%"><col style="width:30%"><col class="col-remove no-print" style="width:10%"></colgroup>
                             <thead><tr><th>Action</th><th>Due date</th><th>Status</th><th>Notes</th><th class="no-print">Action</th></tr></thead>
                             <tbody id="actionRows"></tbody>
                         </table>
